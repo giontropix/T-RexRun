@@ -1,14 +1,15 @@
 public class Character {
-    private final String name;
+    enum Species {TREX, LITTLEPALM, BIGPALM, BIRD}
+    private final Species species;
     private final int height;
 
-    public Character(String name, int height){
+    public Character(Species species, int height){
         this.height = height;
-        this.name = name;
+        this.species = species;
     }
 
-    public String getName() {
-        return name;
+    public Species getSpecies() {
+        return species;
     }
 
     public int getHeight() {
