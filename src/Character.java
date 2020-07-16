@@ -1,18 +1,33 @@
 public class Character {
-    enum Species {TREX, LITTLEPALM, BIGPALM, BIRD}
-    private final Species species;
-    private final int height;
+    private int x;
+    private int y;
 
-    public Character(Species species, int height){
-        this.height = height;
-        this.species = species;
+    public Character(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public Species getSpecies() {
-        return species;
+    public int getX() {
+        return this.x;
     }
 
-    public int getHeight() {
-        return height;
+    public int getY() {
+        return this.y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public boolean equals(Object o) {
+        if (o instanceof Character) {
+            Character c = (Character)o;
+            return c.x == this.x && c.y == this.y;
+        }
+        return false;
     }
 }
