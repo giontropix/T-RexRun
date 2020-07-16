@@ -1,8 +1,8 @@
-public class Character {
+public class Coordinate {
     private int x;
     private int y;
 
-    public Character(int x, int y) {
+    public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -24,8 +24,8 @@ public class Character {
     }
 
     public boolean equals(Object o) {
-        if (o instanceof Character) {
-            Character c = (Character)o;
+        if (o instanceof Coordinate) {
+            Coordinate c = (Coordinate)o;
             return c.x == this.x && c.y == this.y;
         }
         return false;

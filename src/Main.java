@@ -12,6 +12,6 @@ public class Main {
             if (answer.equalsIgnoreCase("s")) {
                 trex.setJump(true);
             }
-        } while(trex.game.isInGame());
+        } while(trex.fieldOFObstacle.isInGame());
     }
 }

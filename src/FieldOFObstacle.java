@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
-public class Game extends Thread {
+public class FieldOFObstacle extends Thread {
     private int heightField;
     private int weightField;
     private boolean isInGame = true;
-    ArrayList<Character> palm = new ArrayList<>();
+    ArrayList<Coordinate> palm = new ArrayList<>();
 
-    public Game(int landscape){
+    public FieldOFObstacle(int landscape){
         this.heightField = 10;
         this.weightField = landscape;
     }
@@ -39,16 +39,16 @@ public class Game extends Thread {
     private void generatePalm(){
         double random = Math.random();
         if(random <= 0.1) {
-            palm.add(new Character(heightField - 1, weightField));
-            palm.add(new Character(heightField - 2, weightField));
+            palm.add(new Coordinate(heightField - 1, weightField));
+            palm.add(new Coordinate(heightField - 2, weightField));
         }
         else if(random <= 0.2)
-            palm.add(new Character(heightField - 1, weightField));
+            palm.add(new Coordinate(heightField - 1, weightField));
     }
 
     private void moveObstacle(){
-        for (Character character : palm) {
-            character.setY(character.getY() - 1);
+        for (Coordinate coordinate : palm) {
+            coordinate.setY(coordinate.getY() - 1);
         }
     }
 
