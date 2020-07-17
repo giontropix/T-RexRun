@@ -3,15 +3,15 @@ import java.util.ArrayList;
 public class Trex extends Thread {
 
     private boolean isJump = false;
-    final FieldOfPalm fieldOfPalm = new FieldOfPalm();
-    ArrayList<Coordinate> trex = new ArrayList<>();
+    private final FieldOfObstacle fieldOfObstacle = new FieldOfObstacle();
+    private final ArrayList<Coordinate> trex = new ArrayList<>();
 
     public Trex() {
         printTrex();
     }
 
     public void printTrex(){
-        for (int i = this.fieldOfPalm.getFieldHeight() - 2; i > 5; i--) {
+        for (int i = this.fieldOfObstacle.getFieldHeight() - 2; i > 5; i--) {
             this.trex.add(new Coordinate(i, 5));
             this.trex.add(new Coordinate(i, 6));
         }
@@ -20,18 +20,22 @@ public class Trex extends Thread {
     @Override
     public void run(){
         try {
-            while (this.fieldOfPalm.isInGame()) {
-                lookForHeadBetweenClouds();
-                lookForFeetInAir();
-                if(this.isJump)
-                    jump();
-                else
-                    configureGravity();
-                Thread.sleep(1000);
-            }
+             do {
+                 this.lookForHeadBetweenClouds();
+                 this.lookForFeetInAir();
+                 if(this.isJump)
+                     this.jump();
+                 else
+                     this.configureGravity();
+                 Thread.sleep(1000);
+            } while (this.fieldOfObstacle.isInGame());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Coordinate> getTrex() {
+        return trex;
     }
 
     public void setJump(boolean jump) {
@@ -51,11 +55,11 @@ public class Trex extends Thread {
         else this.isJump = false;
     }
 
-    public boolean lookForFeetInAir(){
-        return !this.trex.contains(new Coordinate(this.fieldOfPalm.getFieldHeight() - 1, 5));
+    private boolean lookForFeetInAir() {
+        return !this.trex.contains(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1, 5));
     }
 
-    private void configureGravity(){
+    private void configureGravity() {
         if (lookForFeetInAir()) {
             for (Coordinate coordinate : this.trex) {
                 coordinate.setX(coordinate.getX() + 1);
