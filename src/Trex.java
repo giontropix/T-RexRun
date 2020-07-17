@@ -22,7 +22,7 @@ public class Trex extends Thread {
     public void run(){
         try {
             while (this.fieldOFObstacle.isInGame()) {
-                Thread.sleep(1200);
+                Thread.sleep(500);
                 lookForHeadBetweenClouds();
                 lookForFeetInAir();
                 if(this.isJump)

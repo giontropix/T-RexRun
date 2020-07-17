@@ -22,7 +22,7 @@ public class FieldOfObstacle extends Thread {
     public void run() {
         try {
             while(isInGame()){
-                Thread.sleep (600);
+                Thread.sleep (1000);
                 this.generatePalm();
                 this.moveObstacle();
             }
@@ -41,7 +41,7 @@ public class FieldOfObstacle extends Thread {
             this.palm.add(new Coordinate(this.heightField - 1, this.weightField));
             this.palm.add(new Coordinate(this.heightField - 2, this.weightField));
         }
-        else if(random <= 0.2)
+        else if(random > 0.1 && random <= 0.2)
             this.palm.add(new Coordinate(this.heightField - 1, this.weightField));
     }
 
