@@ -2,14 +2,14 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Trex trex = new Trex();
-        trex.start();
+        PrinterLevel printerLevel = new PrinterLevel();
+        printerLevel.start();
         do {
             Scanner scan = new Scanner(System.in);
             String answer = scan.nextLine();
             if (answer.equalsIgnoreCase("s")) {
-                trex.setJump(true);
+                printerLevel.trex.setJump(true);
             }
-        } while(trex.fieldOFObstacle.isInGame());
+        } while(printerLevel.fieldOfPalm.isInGame());
     }
 }
