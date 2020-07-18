@@ -93,6 +93,15 @@ public class FieldOfObstacle extends Thread {
         }
     }
 
+    public void deleteObstacle() {
+        if(this.palm.size() > 0 && this.palm.get(0).getY() < 0)
+            this.palm.remove(0);
+        if(this.bird.size() > 0 && this.bird.get(0).getY() < 0)
+            this.bird.remove(0);
+        if(this.ground.size() > 0 && this.ground.get(0).getY() < 0)
+            this.ground.remove(0);
+    }
+
     public void calculateScore() {
         if (this.isInGame) {
             if (this.palm.contains(new Coordinate(this.fieldHeight - 1, 4)))
@@ -100,10 +109,5 @@ public class FieldOfObstacle extends Thread {
             if (this.palm.contains(new Coordinate(this.fieldHeight - 2, 4)))
                 this.score += 10;
         }
-    }
-
-    public void deleteObstacle() {
-        if(this.palm.size() > 0 && this.palm.get(0).getY() < 0)
-            this.palm.remove(0);
     }
 }
