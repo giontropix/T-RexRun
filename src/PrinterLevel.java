@@ -11,7 +11,6 @@ public class PrinterLevel extends Thread {
         try {
              do {
                  this.crashGameOver();
-                 this.fieldOfObstacle.deleteObstacle();
                  System.out.println(this.fieldOfObstacle.getPalm().size());
                  System.out.println("\nIN GAME: " + this.fieldOfObstacle.isInGame());
                  System.out.println("SCORE: " + this.fieldOfObstacle.getScore());

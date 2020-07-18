@@ -1,10 +1,10 @@
-import java.util.ArrayList;
+import java.util.Vector;
 
 public class Trex extends Thread {
 
     private boolean isJump = false;
     private final FieldOfObstacle fieldOfObstacle = new FieldOfObstacle();
-    private final ArrayList<Coordinate> trex = new ArrayList<>();
+    private final Vector<Coordinate> trex = new Vector<>();
 
     public Trex() {
         printTrex();
@@ -21,12 +21,14 @@ public class Trex extends Thread {
     public void run(){
         try {
              do {
-                 this.lookForHeadBetweenClouds();
-                 this.lookForFeetInAir();
-                 if(this.isJump)
+                 if(this.isJump) {
+                     this.lookForHeadBetweenClouds();
                      this.jump();
-                 else
+                 }
+                 else {
+                     this.lookForFeetOnTheGround();
                      this.setGravity();
+                 }
                  Thread.sleep(1000);
             } while (this.fieldOfObstacle.isInGame());
         } catch (InterruptedException e) {
@@ -34,7 +36,7 @@ public class Trex extends Thread {
         }
     }
 
-    public ArrayList<Coordinate> getTrex() {
+    public Vector<Coordinate> getTrex() {
         return trex;
     }
 
@@ -55,12 +57,13 @@ public class Trex extends Thread {
         else this.isJump = false;
     }
 
-    private boolean lookForFeetInAir() {
-        return !this.trex.contains(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1, 5));
+    public boolean lookForFeetOnTheGround() {
+        return this.trex.contains(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1, 5));
     }
 
     private void setGravity() {
-        if (lookForFeetInAir()) {
+        if (!lookForFeetOnTheGround()) {
+            this.isJump = false;
             for (Coordinate coordinate : this.trex) {
                 coordinate.setX(coordinate.getX() + 1);
             }

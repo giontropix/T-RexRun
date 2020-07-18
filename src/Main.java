@@ -8,7 +8,8 @@ public class Main {
             Scanner scan = new Scanner(System.in);
             String answer = scan.nextLine();
             if (answer.equalsIgnoreCase("s")) {
-                printerLevel.getTrex().setJump(true);
+                if(printerLevel.getTrex().lookForFeetOnTheGround())
+                    printerLevel.getTrex().setJump(true);
             }
         } while(printerLevel.getFieldOfObstacle().isInGame());
     }

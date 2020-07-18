@@ -1,15 +1,15 @@
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FieldOfObstacle extends Thread {
     private final int fieldHeight = 10;
-    private final int fieldWidth = 10;
+    private final int fieldWidth = 50;
     private boolean isInGame = true;
     private int score = 0;
     private int distance = 0;
-    private final ArrayList<Coordinate> palm = new ArrayList<>();
-    private final ArrayList<Coordinate> bird = new ArrayList<>();
-    private final ArrayList<Coordinate> ground = new ArrayList<>();
+    private final Vector<Coordinate> palm = new Vector<>();
+    private final Vector<Coordinate> bird = new Vector<>();
+    private final Vector<Coordinate> ground = new Vector<>();
 
     public FieldOfObstacle(){
         this.generateObstacle();
@@ -19,9 +19,10 @@ public class FieldOfObstacle extends Thread {
     public void run() {
         try {
             do {
-                this.calculateScore();
                 this.generateObstacle();
                 this.moveObstacle();
+                this.deleteOutOfViewObstacle();
+                this.calculateScore();
                 this.distance++;
                 Thread.sleep (1500);
             } while(this.isInGame);
@@ -30,15 +31,15 @@ public class FieldOfObstacle extends Thread {
         }
     }
 
-    public ArrayList<Coordinate> getPalm() {
+    public Vector<Coordinate> getPalm() {
         return palm;
     }
 
-    public ArrayList<Coordinate> getBird() {
+    public Vector<Coordinate> getBird() {
         return bird;
     }
 
-    public ArrayList<Coordinate> getGround() {
+    public Vector<Coordinate> getGround() {
         return ground;
     }
 
@@ -93,7 +94,7 @@ public class FieldOfObstacle extends Thread {
         }
     }
 
-    public void deleteObstacle() {
+    public void deleteOutOfViewObstacle() {
         if(this.palm.size() > 0 && this.palm.get(0).getY() < 0)
             this.palm.remove(0);
         if(this.bird.size() > 0 && this.bird.get(0).getY() < 0)
