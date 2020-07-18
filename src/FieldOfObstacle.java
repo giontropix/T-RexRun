@@ -3,7 +3,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FieldOfObstacle extends Thread {
     private final int fieldHeight = 10;
-    private final int fieldWidth = 100;
+    private final int fieldWidth = 10;
     private boolean isInGame = true;
     private int score = 0;
     private int distance = 0;
@@ -100,5 +100,10 @@ public class FieldOfObstacle extends Thread {
             if (this.palm.contains(new Coordinate(this.getFieldHeight() - 2, 4)))
                 this.score += 10;
         }
+    }
+
+    public void deleteObstacle() {
+        if(this.palm.size() > 0 && this.palm.get(0).getY() < 0)
+            this.palm.remove(0);
     }
 }

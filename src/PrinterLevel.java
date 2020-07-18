@@ -10,7 +10,9 @@ public class PrinterLevel extends Thread {
     public void run(){
         try {
              do {
-                 this.crash();
+                 this.crashGameOver();
+                 this.fieldOfObstacle.deleteObstacle();
+                 System.out.println(this.fieldOfObstacle.getPalm().size());
                  System.out.println("\nIN GAME: " + this.fieldOfObstacle.isInGame());
                  System.out.println("SCORE: " + this.fieldOfObstacle.getScore());
                  System.out.println("DISTANCE: " + this.fieldOfObstacle.getDistance() + "\n");
@@ -23,16 +25,20 @@ public class PrinterLevel extends Thread {
     }
 
     public Trex getTrex() {
-        return trex;
+        return this.trex;
     }
 
     public FieldOfObstacle getFieldOfObstacle() {
-        return fieldOfObstacle;
+        return this.fieldOfObstacle;
     }
 
-    private void crash(){
+    private void crashGameOver(){
         for (int i = 0; i < this.fieldOfObstacle.getPalm().size(); i++) {
             if(this.trex.getTrex().contains(new Coordinate(this.fieldOfObstacle.getPalm().get(i).getX(), this.fieldOfObstacle.getPalm().get(i).getY())))
+                this.fieldOfObstacle.setInGame(false);
+        }
+        for (int i = 0; i < this.fieldOfObstacle.getBird().size(); i++) {
+            if(this.trex.getTrex().contains(new Coordinate(this.fieldOfObstacle.getBird().get(i).getX(), this.fieldOfObstacle.getBird().get(i).getY())))
                 this.fieldOfObstacle.setInGame(false);
         }
     }

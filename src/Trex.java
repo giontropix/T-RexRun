@@ -26,7 +26,7 @@ public class Trex extends Thread {
                  if(this.isJump)
                      this.jump();
                  else
-                     this.configureGravity();
+                     this.setGravity();
                  Thread.sleep(1000);
             } while (this.fieldOfObstacle.isInGame());
         } catch (InterruptedException e) {
@@ -59,7 +59,7 @@ public class Trex extends Thread {
         return !this.trex.contains(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1, 5));
     }
 
-    private void configureGravity() {
+    private void setGravity() {
         if (lookForFeetInAir()) {
             for (Coordinate coordinate : this.trex) {
                 coordinate.setX(coordinate.getX() + 1);
