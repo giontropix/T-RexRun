@@ -24,7 +24,7 @@ public class FieldOfObstacle extends Thread {
                 this.moveObstacle();
                 this.distance++;
                 Thread.sleep (1500);
-            } while(this.isInGame());
+            } while(this.isInGame);
         } catch(InterruptedException e) {
             e.printStackTrace();
         }
@@ -94,10 +94,10 @@ public class FieldOfObstacle extends Thread {
     }
 
     public void calculateScore() {
-        if (this.isInGame()) {
-            if (this.palm.contains(new Coordinate(this.getFieldHeight() - 1, 4)))
+        if (this.isInGame) {
+            if (this.palm.contains(new Coordinate(this.fieldHeight - 1, 4)))
                 this.score += 10;
-            if (this.palm.contains(new Coordinate(this.getFieldHeight() - 2, 4)))
+            if (this.palm.contains(new Coordinate(this.fieldHeight - 2, 4)))
                 this.score += 10;
         }
     }
