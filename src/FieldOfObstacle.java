@@ -21,7 +21,7 @@ public class FieldOfObstacle extends Thread {
                 this.generateObstacle();
                 this.moveObstacle();
                 this.deleteOutOfViewObstacle();
-                this.calculateScore();
+                this.calculateScoreFromObstacle();
                 this.score++;
                 Thread.sleep (1500);
             } while(this.isInGame);
@@ -98,7 +98,7 @@ public class FieldOfObstacle extends Thread {
             this.ground.remove(0);
     }
 
-    public void calculateScore() {
+    public void calculateScoreFromObstacle() {
         if (this.isInGame) {
             if (this.palm.contains(new Coordinate(this.fieldHeight - 1, 4)))
                 this.score += 10;

@@ -1,8 +1,10 @@
 public class PrinterLevel extends Thread {
     private final Trex trex = new Trex();
     private final FieldOfObstacle fieldOfObstacle = new FieldOfObstacle();
+    String playerName;
 
-    public PrinterLevel() {
+    public PrinterLevel(String playerName) {
+        this.playerName = playerName;
         this.fieldOfObstacle.start();
         this.trex.start();
     }
@@ -13,6 +15,7 @@ public class PrinterLevel extends Thread {
                  this.crashGameOver();
                  System.out.println(this.fieldOfObstacle.getPalm().size());
                  System.out.println("\nIN GAME: " + this.fieldOfObstacle.isInGame());
+                 System.out.println("\nPLAYER NAME: " + this.playerName.toUpperCase());
                  System.out.println("SCORE: " + this.fieldOfObstacle.getScore() + "\n");
                  System.out.println(this.toString());
                  Thread.sleep(500);

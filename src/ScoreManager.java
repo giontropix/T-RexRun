@@ -6,7 +6,6 @@ public class ScoreManager {
     private final String path = "\\src\\score.txt";
 
     public ScoreManager(){
-
     }
 
     private String createFilePath(String path){
