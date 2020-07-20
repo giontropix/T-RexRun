@@ -17,10 +17,6 @@ public class ScoreManager {
         return listOfScore;
     }
 
-    public void addScore(Score score){
-        this.listOfScore.add(score);
-    }
-
     public void store() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(this.createFilePath(this.path)));

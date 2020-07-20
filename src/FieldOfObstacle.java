@@ -20,9 +20,9 @@ public class FieldOfObstacle extends Thread {
             do {
                 this.generateObstacle();
                 this.moveObstacle();
-                this.deleteOutOfViewObstacle();
-                this.calculateScoreFromObstacle();
                 this.score++;
+                this.calculateScoreFromObstacle();
+                this.deleteOutOfViewObstacle();
                 Thread.sleep (1500);
             } while(this.isInGame);
         } catch(InterruptedException e) {
