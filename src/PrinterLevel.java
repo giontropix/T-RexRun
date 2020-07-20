@@ -13,8 +13,7 @@ public class PrinterLevel extends Thread {
                  this.crashGameOver();
                  System.out.println(this.fieldOfObstacle.getPalm().size());
                  System.out.println("\nIN GAME: " + this.fieldOfObstacle.isInGame());
-                 System.out.println("SCORE: " + this.fieldOfObstacle.getScore());
-                 System.out.println("DISTANCE: " + this.fieldOfObstacle.getDistance() + "\n");
+                 System.out.println("SCORE: " + this.fieldOfObstacle.getScore() + "\n");
                  System.out.println(this.toString());
                  Thread.sleep(500);
             } while(this.fieldOfObstacle.isInGame());

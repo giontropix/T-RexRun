@@ -6,7 +6,6 @@ public class FieldOfObstacle extends Thread {
     private final int fieldWidth = 10;
     private boolean isInGame = true;
     private int score = 0;
-    private int distance = 0;
     private final Vector<Coordinate> palm = new Vector<>();
     private final Vector<Coordinate> bird = new Vector<>();
     private final Vector<Coordinate> ground = new Vector<>();
@@ -23,7 +22,7 @@ public class FieldOfObstacle extends Thread {
                 this.moveObstacle();
                 this.deleteOutOfViewObstacle();
                 this.calculateScore();
-                this.distance++;
+                this.score++;
                 Thread.sleep (1500);
             } while(this.isInGame);
         } catch(InterruptedException e) {
@@ -53,10 +52,6 @@ public class FieldOfObstacle extends Thread {
 
     public int getScore() {
         return score;
-    }
-
-    public int getDistance() {
-        return distance;
     }
 
     public boolean isInGame() {

@@ -1,29 +1,24 @@
 import java.io.Serializable;
 
-public class Score implements Serializable {
-    private String playerName;
-    private int distance;
-    private int point;
+public class Score implements Serializable, Comparable<Score> {
+    private final String playerName;
+    private final int totalScore;
 
-    public Score(String playerName, int distance, int point) {
+    public Score(String playerName, int totalScore) {
         this.playerName = playerName;
-        this.distance = distance;
-        this.point = point;
-    }
-
-    public int getTotalScore(){
-        return this.distance + this.point;
+        this.totalScore = totalScore;
     }
 
     public String getPlayerName() {
         return playerName;
     }
 
-    public int getDistance() {
-        return distance;
+    public int getTotalScore() {
+        return totalScore;
     }
 
-    public int getPoint() {
-        return point;
+    @Override
+    public int compareTo(Score o) {
+        return Integer.compare(o.totalScore, this.totalScore);
     }
 }

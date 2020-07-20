@@ -1,20 +1,12 @@
 import java.io.*;
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 public class ScoreManager {
-    private ArrayList<Score> listOfScore = new ArrayList<>();
+    private TreeSet<Score> listOfScore = new TreeSet<>();
     private final String path = "\\src\\score.txt";
 
     public ScoreManager(){
 
-    }
-
-    public void addScore(Score score){
-        this.listOfScore.add(score);
-    }
-
-    public ArrayList<Score> getListOfScore() {
-        return listOfScore;
     }
 
     private String createFilePath(String path){
@@ -22,10 +14,18 @@ public class ScoreManager {
         return finalPath + path;
     }
 
+    public TreeSet<Score> getListOfScore() {
+        return listOfScore;
+    }
+
+    public void addScore(Score score){
+        this.listOfScore.add(score);
+    }
+
     public void store() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(this.createFilePath(this.path)));
-            outputStream.writeObject(listOfScore);
+            outputStream.writeObject(this.listOfScore);
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,7 +35,8 @@ public class ScoreManager {
     public void load() {
         try {
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(this.createFilePath(this.path)));
-            this.listOfScore = (ArrayList<Score>) inputStream.readObject();
+            this.listOfScore.clear();
+            this.listOfScore = (TreeSet<Score>) inputStream.readObject();
             inputStream.close();
         } catch (EOFException eofException) {
             System.out.println("Fine della lettura del file");

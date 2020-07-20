@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
@@ -23,22 +24,23 @@ public class Main {
                             if (printerLevel.getTrex().lookForFeetOnTheGround())
                                 printerLevel.getTrex().setJump(true);
                         }
+                        if(!printerLevel.getFieldOfObstacle().isInGame())
+                            System.out.println("HAI PERSO!!!\nPremi INVIO per continuare...");
                     } while (printerLevel.getFieldOfObstacle().isInGame());
-                    System.out.println("HAI PERSO!!!\nPremi INVIO per continuare...");
-                    scoreManager.addScore(new Score(name, printerLevel.getFieldOfObstacle().getScore(), printerLevel.getFieldOfObstacle().getDistance()));
+                    scoreManager.addScore(new Score(name, printerLevel.getFieldOfObstacle().getScore()));
                     scoreManager.store();
                     break;
                 case 2:
                     scoreManager.load();
                     if (scoreManager.getListOfScore().size() == 0)
                         System.out.println("Ancora non sono presenti punteggi in elenco!");
-                    else
-                        for (int i = 0; i < scoreManager.getListOfScore().size(); i++) {
-                            System.out.println("Player Name: " + scoreManager.getListOfScore().get(i).getPlayerName() + ", Distance: "
-                                    + scoreManager.getListOfScore().get(i).getDistance() + ", Points: "
-                                    + scoreManager.getListOfScore().get(i).getPoint() + ", Total Score: " +
-                                    scoreManager.getListOfScore().get(i).getTotalScore());
+                    else {
+                        System.out.println("Ranking List");
+                        for (Score score : scoreManager.getListOfScore()) {
+                            System.out.println("Player Name: " + score.getPlayerName() +
+                                    ", Total Score: " + score.getTotalScore());
                         }
+                    }
                     break;
             }
         } while (choice != 0);
