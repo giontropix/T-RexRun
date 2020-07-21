@@ -28,7 +28,6 @@ public class Main {
                         if(!printerLevel.getFieldOfObstacle().isInGame())
                             System.out.println("HAI PERSO!!!\nPremi INVIO per continuare...");
                     } while (printerLevel.getFieldOfObstacle().isInGame());
-                    printerLevel.interrupt();
                     scoreManager.getListOfScore().add(new Score(name.toUpperCase(), printerLevel.getFieldOfObstacle().getScore()));
                     scoreManager.store();
                     break;
