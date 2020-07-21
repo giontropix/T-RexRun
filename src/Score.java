@@ -19,6 +19,8 @@ public class Score implements Serializable, Comparable<Score> {
 
     @Override
     public int compareTo(Score o) {
-        return Integer.compare(o.totalScore, this.totalScore);
+        if(o.totalScore != this.totalScore)
+            return Integer.compare(o.totalScore, this.totalScore);
+        else return this.playerName.compareTo(o.playerName);
     }
 }

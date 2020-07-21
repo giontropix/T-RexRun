@@ -31,7 +31,7 @@ public class ScoreManager {
         try {
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(this.createFilePath(this.path)));
             this.listOfScore.clear();
-            this.listOfScore = (TreeSet<Score>) inputStream.readObject();
+            this.listOfScore = (TreeSet<Score>)inputStream.readObject();
             inputStream.close();
         } catch (EOFException eofException) {
             System.out.println("Fine della lettura del file");

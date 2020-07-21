@@ -5,8 +5,9 @@ public class Main {
         int choice;
         String name;
         ScoreManager scoreManager = new ScoreManager();
+        scoreManager.load();
         do {
-            System.out.println("\t\t\t\t--------> T-REX RUN! <--------");
+            System.out.println("\n\t\t\t\t--------> T-REX RUN! <--------");
             System.out.println("Press: \n - 1 to play\n - 2 for ranking list\n - 0 to exit");
             Scanner scanChoice = new Scanner(System.in);
             choice = scanChoice.nextInt();
@@ -27,17 +28,18 @@ public class Main {
                         if(!printerLevel.getFieldOfObstacle().isInGame())
                             System.out.println("HAI PERSO!!!\nPremi INVIO per continuare...");
                     } while (printerLevel.getFieldOfObstacle().isInGame());
-                    scoreManager.getListOfScore().add(new Score(name, printerLevel.getFieldOfObstacle().getScore()));
+                    printerLevel.interrupt();
+                    scoreManager.getListOfScore().add(new Score(name.toUpperCase(), printerLevel.getFieldOfObstacle().getScore()));
                     scoreManager.store();
                     break;
                 case 2:
-                    scoreManager.load();
                     if (scoreManager.getListOfScore().size() == 0)
                         System.out.println("Ancora non sono presenti punteggi in elenco!");
                     else {
                         System.out.println("Ranking List");
+                        int ranking = 1;
                         for (Score score : scoreManager.getListOfScore()) {
-                            System.out.println("Player Name: " + score.getPlayerName().toUpperCase() +
+                            System.out.println(ranking++ + "° Player, Name: " + score.getPlayerName().toUpperCase() +
                                     ", Total Score: " + score.getTotalScore());
                         }
                     }
