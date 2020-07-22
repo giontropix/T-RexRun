@@ -40,6 +40,10 @@ public class Trex extends Thread {
         return trex;
     }
 
+    public boolean isJump() {
+        return isJump;
+    }
+
     public void setJump(boolean jump) {
         this.isJump = jump;
     }
@@ -61,7 +65,7 @@ public class Trex extends Thread {
         return this.trex.contains(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1, 5));
     }
 
-    private void setGravity() {
+    public void setGravity() {
         if (!lookForFeetOnTheGround()) {
             this.isJump = false;
             for (Coordinate coordinate : this.trex) {

@@ -3,7 +3,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FieldOfObstacle extends Thread {
     private final int fieldHeight = 10;
-    private final int fieldWidth = 10;
+    private final int fieldWidth = 50;
     private boolean isInGame = true;
     private int score = 0;
     private final Vector<Coordinate> palm = new Vector<>();
@@ -62,7 +62,7 @@ public class FieldOfObstacle extends Thread {
         this.isInGame = inGame;
     }
 
-    private void generateObstacle(){
+    public void generateObstacle(){
         double random = Math.random();
         this.ground.add(new Coordinate(this.fieldHeight, this.fieldWidth - 1));
         if(random < 0.1) { // probability to add a big palm
@@ -77,7 +77,7 @@ public class FieldOfObstacle extends Thread {
         }
     }
 
-    private void moveObstacle(){
+    public void moveObstacle(){
         for (Coordinate coordinate : this.palm) {
             coordinate.setY(coordinate.getY() - 1);
         }

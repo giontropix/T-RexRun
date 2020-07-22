@@ -1,6 +1,7 @@
 public class PrinterLevel extends Thread {
     private final Trex trex = new Trex();
     private final FieldOfObstacle fieldOfObstacle = new FieldOfObstacle();
+    private int[][] gridForGUI = new int[10][50];
     String playerName;
 
     public PrinterLevel(String playerName) {
@@ -12,6 +13,7 @@ public class PrinterLevel extends Thread {
     public void run(){
         try {
              do {
+                 this.importIntoGridForGUI();
                  this.crashGameOver();
                  System.out.println(this.fieldOfObstacle.getPalm().size());
                  System.out.println("\nIN GAME: " + this.fieldOfObstacle.isInGame());
@@ -29,6 +31,10 @@ public class PrinterLevel extends Thread {
         return this.trex;
     }
 
+    public int[][] getGridForGUI() {
+        return gridForGUI;
+    }
+
     public FieldOfObstacle getFieldOfObstacle() {
         return this.fieldOfObstacle;
     }
@@ -41,6 +47,21 @@ public class PrinterLevel extends Thread {
         for (int i = 0; i < this.fieldOfObstacle.getBird().size(); i++) {
             if(this.trex.getTrex().contains(new Coordinate(this.fieldOfObstacle.getBird().get(i).getX(), this.fieldOfObstacle.getBird().get(i).getY())))
                 this.fieldOfObstacle.setInGame(false);
+        }
+    }
+
+    private void importIntoGridForGUI(){
+        for (int i = 0; i < this.gridForGUI.length; i++) {
+            for (int j = 0; j < this.gridForGUI[i].length; j++) {
+                if(this.trex.getTrex().contains(new Coordinate(i, j)))
+                    this.gridForGUI[i][j] = 1;
+                if(this.fieldOfObstacle.getPalm().contains(new Coordinate(i, j)))
+                    this.gridForGUI[i][j] = 2;
+                if(this.fieldOfObstacle.getBird().contains(new Coordinate(i, j)))
+                    this.gridForGUI[i][j] = 3;
+                if(this.fieldOfObstacle.getGround().contains(new Coordinate(i, j)))
+                    this.gridForGUI[i][j] = 4;
+            }
         }
     }
 
