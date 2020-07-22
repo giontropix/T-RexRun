@@ -3,7 +3,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FieldOfObstacle extends Thread {
     private final int fieldHeight = 10;
-    private final int fieldWidth = 50;
+    private final int fieldWidth = 25;
     private boolean isInGame = true;
     private int score = 0;
     private final Vector<Coordinate> palm = new Vector<>();

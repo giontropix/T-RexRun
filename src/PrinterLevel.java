@@ -1,7 +1,7 @@
 public class PrinterLevel extends Thread {
     private final Trex trex = new Trex();
     private final FieldOfObstacle fieldOfObstacle = new FieldOfObstacle();
-    private int[][] gridForGUI = new int[10][50];
+    private int[][] gridForGUI = new int[this.fieldOfObstacle.getFieldHeight() + 1][this.fieldOfObstacle.getFieldWidth()];
     String playerName;
 
     public PrinterLevel(String playerName) {
@@ -51,29 +51,30 @@ public class PrinterLevel extends Thread {
     }
 
     private void importIntoGridForGUI(){
-        for (int i = 0; i < this.gridForGUI.length; i++) {
-            for (int j = 0; j < this.gridForGUI[i].length; j++) {
+        for (int i = 1; i < this.gridForGUI.length; i++) {
+            for (int j = 1; j < this.gridForGUI[i].length; j++) {
                 if(this.trex.getTrex().contains(new Coordinate(i, j)))
                     this.gridForGUI[i][j] = 1;
-                if(this.fieldOfObstacle.getPalm().contains(new Coordinate(i, j)))
+                else if(this.fieldOfObstacle.getPalm().contains(new Coordinate(i, j)))
                     this.gridForGUI[i][j] = 2;
-                if(this.fieldOfObstacle.getBird().contains(new Coordinate(i, j)))
+                else if(this.fieldOfObstacle.getBird().contains(new Coordinate(i, j)))
                     this.gridForGUI[i][j] = 3;
-                if(this.fieldOfObstacle.getGround().contains(new Coordinate(i, j)))
+                else if(this.fieldOfObstacle.getGround().contains(new Coordinate(i, j)))
                     this.gridForGUI[i][j] = 4;
+                else this.gridForGUI[i][j] = 0;
             }
         }
     }
 
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (int i = 1; i < this.fieldOfObstacle.getFieldHeight() + 1; i++) {
+        /*for (int i = 1; i < this.fieldOfObstacle.getFieldHeight() + 1; i++) {
             result.append(i).append("\t").append("[");
             for(int j = 1; j < this.fieldOfObstacle.getFieldWidth(); j++) {
                 if (this.fieldOfObstacle.getPalm().contains(new Coordinate(i, j)))
                     result.append("\u001B[32m|\u001B[0m");
                 else if (this.fieldOfObstacle.getBird().contains(new Coordinate(i, j)))
-                    result.append("\u001B[35m-\u001B[0m");
+                    result.append("\u001B[35m=\u001B[0m");
                 else if (this.trex.getTrex().contains(new Coordinate(i, j)))
                     result.append("\u001B[31mO\u001B[0m");
                 else if (this.fieldOfObstacle.getGround().contains(new Coordinate(i, j))) {
@@ -81,6 +82,12 @@ public class PrinterLevel extends Thread {
                 }
                 else
                     result.append(" ");
+            }
+            result.append("]\n");*/
+        for (int i = 0; i < gridForGUI.length; i++) {
+            result.append(i).append("\t").append("[");
+            for (int j = 0; j < gridForGUI[i].length - 1; j++) {
+                result.append(gridForGUI[i][j]);
             }
             result.append("]\n");
         }
