@@ -1,7 +1,7 @@
 public class PrinterLevel extends Thread {
     private final Trex trex = new Trex();
     private final FieldOfObstacle fieldOfObstacle = new FieldOfObstacle();
-    private int[][] gridForGUI = new int[this.fieldOfObstacle.getFieldHeight() + 1][this.fieldOfObstacle.getFieldWidth()];
+    private final int[][] gridForGUI = new int[this.fieldOfObstacle.getFieldHeight() + 1][this.fieldOfObstacle.getFieldWidth()];
     String playerName;
 
     public PrinterLevel(String playerName) {
@@ -68,7 +68,7 @@ public class PrinterLevel extends Thread {
 
     public String toString() {
         StringBuilder result = new StringBuilder();
-        /*for (int i = 1; i < this.fieldOfObstacle.getFieldHeight() + 1; i++) {
+        for (int i = 1; i < this.fieldOfObstacle.getFieldHeight() + 1; i++) {
             result.append(i).append("\t").append("[");
             for(int j = 1; j < this.fieldOfObstacle.getFieldWidth(); j++) {
                 if (this.fieldOfObstacle.getPalm().contains(new Coordinate(i, j)))
@@ -83,13 +83,13 @@ public class PrinterLevel extends Thread {
                 else
                     result.append(" ");
             }
-            result.append("]\n");*/
-        for (int i = 0; i < gridForGUI.length; i++) {
+            result.append("]\n");
+        /*for (int i = 0; i < gridForGUI.length; i++) {
             result.append(i).append("\t").append("[");
             for (int j = 0; j < gridForGUI[i].length - 1; j++) {
                 result.append(gridForGUI[i][j]);
             }
-            result.append("]\n");
+            result.append("]\n");*/
         }
         return result.toString();
     }
