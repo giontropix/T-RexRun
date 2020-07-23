@@ -11,10 +11,11 @@ public class Trex extends Thread {
     }
 
     public void printTrex(){
-        for (int i = this.fieldOfObstacle.getFieldHeight() - 2; i > 5; i--) {
-            this.trex.add(new Coordinate(i, 5));
-            this.trex.add(new Coordinate(i, 6));
-        }
+        //for (int i = this.fieldOfObstacle.getFieldHeight() - 2; i > 4; i--) {
+            //this.trex.add(new Coordinate(i, 5));
+            //this.trex.add(new Coordinate(i, 6));
+        this.trex.add(new Coordinate(5, 5));
+        //}
     }
 
     @Override
@@ -29,7 +30,7 @@ public class Trex extends Thread {
                      this.lookForFeetOnTheGround();
                      this.setGravity();
                  }
-                 Thread.sleep(1000);
+                 Thread.sleep(500);
             } while (this.fieldOfObstacle.isInGame());
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -40,16 +41,12 @@ public class Trex extends Thread {
         return trex;
     }
 
-    public boolean isJump() {
-        return isJump;
-    }
-
     public void setJump(boolean jump) {
         this.isJump = jump;
     }
 
     public boolean lookForHeadBetweenClouds() {
-        return this.trex.contains(new Coordinate(3, 5));
+        return this.trex.contains(new Coordinate(1, 5));
     }
 
     public void jump(){

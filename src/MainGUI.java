@@ -4,8 +4,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
@@ -14,10 +18,14 @@ import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 public class MainGUI extends Application {
+    Group root = new Group();
+    Canvas canvas = new Canvas(500, 500);
+    GraphicsContext gc = canvas.getGraphicsContext2D();
     String name = "";
     PrinterLevel game = new PrinterLevel(this.name);
-    private final double GAME_HEIGHT = game.getGridForGUI().length*35;
-    private final double GAME_WIDTH = game.getGridForGUI()[0].length*30;
+    ScoreManager score = new ScoreManager();
+    private final double GAME_HEIGHT = game.getFieldOfObstacle().getFieldHeight()*35;
+    private final double GAME_WIDTH = game.getFieldOfObstacle().getFieldWidth()*30;
 
     public static void main(String[] args) {
         launch(args);
@@ -26,16 +34,32 @@ public class MainGUI extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("T-Rex Run!");
+        score.load();
         createContent(stage);
+    }
+
+    private VBox menu(){
+        final Menu menuOptions = new Menu("Options");
+        MenuItem subMenuNewGame = new MenuItem("New Game");
+        MenuItem subMenuRanking = new MenuItem("Ranking");
+        subMenuRanking.setOnAction(e -> {
+            int ranking = 0;
+            for (Score score : score.getListOfScore()) {
+                gc.fillText(ranking++ + "° Player, Name: " + score.getPlayerName().toUpperCase() +
+                        ", Total Score: " + score.getTotalScore(), 50, 50);
+            }
+        });
+        menuOptions.getItems().add(subMenuNewGame);
+        menuOptions.getItems().add(subMenuRanking);
+
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(menuOptions);
+        return new VBox(menuBar);
     }
 
     private void createContent(Stage stage) {
         game.start();
-        Group root = new Group();
-        Scene scene = new Scene(root, this.GAME_WIDTH, this.GAME_HEIGHT);
-        stage.setScene(scene);
-        Canvas canvas = new Canvas(500, 500);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+
         root.getChildren().add(canvas);
 
         final Box keyboardNode = new Box();
@@ -43,6 +67,11 @@ public class MainGUI extends Application {
         keyboardNode.requestFocus();
         keyboardNode.setOnKeyPressed(this::handle);
         root.getChildren().addAll(keyboardNode);
+
+        root.getChildren().add(menu());
+
+
+
 
         Vector<Circle> tRexBody = new Vector<>();
         Vector<Rectangle> fieldOfPalms = new Vector<>();
@@ -99,10 +128,10 @@ public class MainGUI extends Application {
                 gc.clearRect(0, 0, 512,512);
                 if(game.getFieldOfObstacle().isInGame()) {
                     gc.setFont(Font.font(20));
-                    gc.fillText("PLAYER NAME: ", 20, 30);
-                    gc.strokeText("PLAYER NAME: ", 20, 30);
-                    gc.fillText("SCORE: " + game.getFieldOfObstacle().getScore(), 20, 50);
-                    gc.strokeText("SCORE: " + game.getFieldOfObstacle().getScore(), 20, 50);
+                    gc.fillText("PLAYER NAME: ", 20, 50);
+                    gc.strokeText("PLAYER NAME: ", 20, 50);
+                    gc.fillText("SCORE: " + game.getFieldOfObstacle().getScore(), 20, 70);
+                    gc.strokeText("SCORE: " + game.getFieldOfObstacle().getScore(), 20, 70);
 
                     for (int i = 0; i < game.getTrex().getTrex().size(); i++) {
                         tRexBody.get(i).setCenterX(game.getTrex().getTrex().get(i).getY()*30+20);
@@ -161,11 +190,13 @@ public class MainGUI extends Application {
                 }
             }
         }.start();
+        Scene scene = new Scene(root, this.GAME_WIDTH, this.GAME_HEIGHT);
+        stage.setScene(scene);
         stage.show();
     }
 
     public void handle(KeyEvent arg0) {
-        if (game.getFieldOfObstacle().isInGame()) {
+        if (game.getFieldOfObstacle().isInGame() && game.getTrex().lookForFeetOnTheGround()) {
             game.getTrex().setJump(arg0.getCode() == KeyCode.SPACE);
         }
     }
