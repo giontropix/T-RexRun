@@ -1,21 +1,11 @@
-import java.util.Vector;
-
 public class Trex extends Thread {
 
     private boolean isJump = false;
     private final FieldOfObstacle fieldOfObstacle = new FieldOfObstacle();
-    private final Vector<Coordinate> trex = new Vector<>();
+    private final Coordinate tRex;
 
     public Trex() {
-        printTrex();
-    }
-
-    public void printTrex(){
-        //for (int i = this.fieldOfObstacle.getFieldHeight() - 2; i > 4; i--) {
-            //this.trex.add(new Coordinate(i, 5));
-            //this.trex.add(new Coordinate(i, 6));
-        this.trex.add(new Coordinate(5, 5));
-        //}
+        tRex = new Coordinate(5,5);
     }
 
     @Override
@@ -37,8 +27,8 @@ public class Trex extends Thread {
         }
     }
 
-    public Vector<Coordinate> getTrex() {
-        return trex;
+    public Coordinate gettRex() {
+        return tRex;
     }
 
     public void setJump(boolean jump) {
@@ -46,28 +36,23 @@ public class Trex extends Thread {
     }
 
     public boolean lookForHeadBetweenClouds() {
-        return this.trex.contains(new Coordinate(1, 5));
+        return this.tRex.equals(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 5, 5));
     }
 
     public void jump(){
-        if(!lookForHeadBetweenClouds()) {
-            for (Coordinate coordinate : this.trex) {
-                coordinate.setX(coordinate.getX() - 1);
-            }
-        }
+        if(!lookForHeadBetweenClouds())
+            tRex.setX(tRex.getX() - 1);
         else this.isJump = false;
     }
 
     public boolean lookForFeetOnTheGround() {
-        return this.trex.contains(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1, 5));
+        return this.tRex.equals(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1, 5));
     }
 
     public void setGravity() {
         if (!lookForFeetOnTheGround()) {
             this.isJump = false;
-            for (Coordinate coordinate : this.trex) {
-                coordinate.setX(coordinate.getX() + 1);
-            }
+            tRex.setX(tRex.getX() + 1);
         }
     }
 }

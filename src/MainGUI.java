@@ -7,25 +7,37 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.*;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import java.io.File;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 public class MainGUI extends Application {
+    private AnchorPane pane;
     Group root = new Group();
     Canvas canvas = new Canvas(500, 500);
     GraphicsContext gc = canvas.getGraphicsContext2D();
-    String name = "";
+    String name = "Steve Jobs";
     PrinterLevel game = new PrinterLevel(this.name);
     ScoreManager score = new ScoreManager();
-    private final double GAME_HEIGHT = game.getFieldOfObstacle().getFieldHeight()*35;
-    private final double GAME_WIDTH = game.getFieldOfObstacle().getFieldWidth()*30;
+    Vector<Rectangle> fieldOfPalms = new Vector<>();
+    Vector<Circle> birds = new Vector<>();
+    Vector<Rectangle> grounds = new Vector<>();
+    Rectangle trex = new Rectangle(60, 60);
+    int heightMultiple = 35;
+    int widthMultiple = 30;
+    private final double GAME_HEIGHT = game.getFieldOfObstacle().getFieldHeight() * heightMultiple;
+    private final double GAME_WIDTH = game.getFieldOfObstacle().getFieldWidth() * widthMultiple;
+    private final String BIRD_PATH = "\\img\\bird.png";
+    private final String CACTUS_PATH = "\\img\\cactus.png";
+    private final String GROUND_PATH = "\\img\\Ground.png";
 
     public static void main(String[] args) {
         launch(args);
@@ -36,6 +48,11 @@ public class MainGUI extends Application {
         stage.setTitle("T-Rex Run!");
         score.load();
         createContent(stage);
+    }
+
+    private String createFilePath(String path){
+        String finalPath = new File("").getAbsolutePath();
+        return finalPath + path;
     }
 
     private VBox menu(){
@@ -57,70 +74,158 @@ public class MainGUI extends Application {
         return new VBox(menuBar);
     }
 
-    private void createContent(Stage stage) {
-        game.start();
+    private void createTrex(){
+        trex.setX(game.getTrex().gettRex().getY() * this.heightMultiple);
+        trex.setY(game.getTrex().gettRex().getX() * this.widthMultiple);
+        String TREX_PATH = "\\img\\Dino-stand.png";
+        File file = new File(createFilePath(TREX_PATH));
+        javafx.scene.image.Image img = new Image(file.getAbsoluteFile().toURI().toString());
+        trex.setFill(new ImagePattern(img));
+        root.getChildren().add(trex);
+    }
 
-        root.getChildren().add(canvas);
+    public void animateTrex(){
+        trex.setX(game.getTrex().gettRex().getY() * heightMultiple);
+        trex.setY(game.getTrex().gettRex().getX() * widthMultiple - 25);
+    }
 
-        final Box keyboardNode = new Box();
-        keyboardNode.setFocusTraversable(true);
-        keyboardNode.requestFocus();
-        keyboardNode.setOnKeyPressed(this::handle);
-        root.getChildren().addAll(keyboardNode);
-
-        root.getChildren().add(menu());
-
-
-
-
-        Vector<Circle> tRexBody = new Vector<>();
-        Vector<Rectangle> fieldOfPalms = new Vector<>();
-        Vector<Circle> birds = new Vector<>();
-        Vector<Rectangle> grounds = new Vector<>();
-
-        for (int i = 0; i < this.game.getTrex().getTrex().size(); i++) {
-            Circle trex = new Circle(20);
-            trex.setCenterX(game.getTrex().getTrex().get(i).getY()*30+20);//COME SE COMPENSASSIMO IL RAGGIO
-            trex.setCenterY(game.getTrex().getTrex().get(i).getX()*30+20);
-            trex.setFill(Color.RED);
-            tRexBody.add(trex);
-        }
-        for (Circle trex:tRexBody) {
-            root.getChildren().addAll(trex);
-        }
-
+    private void createCactus(){
         for (int i = 0; i < this.game.getFieldOfObstacle().getPalm().size(); i++) {
-            Rectangle palm = new Rectangle(10, 40);
-            palm.setX(game.getFieldOfObstacle().getPalm().get(i).getX() * 30 + 20);
-            palm.setY(game.getFieldOfObstacle().getPalm().get(i).getY() * 30 + 20);
-            palm.setFill(Color.GREEN);
+
+            Rectangle palm = new Rectangle(30, 30);
+            palm.setX(game.getFieldOfObstacle().getPalm().get(i).getX() * this.heightMultiple);
+            palm.setY(game.getFieldOfObstacle().getPalm().get(i).getY() * this.widthMultiple);
+            File fileCactus = new File(createFilePath(CACTUS_PATH));
+            javafx.scene.image.Image imgCactus = new Image(fileCactus.getAbsoluteFile().toURI().toString());
+            palm.setFill(new ImagePattern(imgCactus));
             fieldOfPalms.add(palm);
         }
         for (Rectangle palm : fieldOfPalms) {
             root.getChildren().addAll(palm);
         }
+    }
 
+    public void animateCactus(){
+        if (fieldOfPalms.size() < game.getFieldOfObstacle().getPalm().size()) {
+            while (fieldOfPalms.size() < game.getFieldOfObstacle().getPalm().size()) {
+                Rectangle newPalm = new Rectangle(30, 30);
+                File fileCactus = new File(createFilePath(CACTUS_PATH));
+                javafx.scene.image.Image imgCactus = new Image(fileCactus.getAbsoluteFile().toURI().toString());
+                newPalm.setFill(new ImagePattern(imgCactus));
+                fieldOfPalms.add(newPalm);
+                root.getChildren().add(newPalm);
+            }
+        }
+        for (int i = 0; i < game.getFieldOfObstacle().getPalm().size(); i++) {
+            fieldOfPalms.get(i).setX(game.getFieldOfObstacle().getPalm().get(i).getY() * heightMultiple);
+            fieldOfPalms.get(i).setY(game.getFieldOfObstacle().getPalm().get(i).getX() * widthMultiple);
+        }
+    }
+
+    private void createBirds(){
         for (int i = 0; i < this.game.getFieldOfObstacle().getBird().size(); i++) {
-            Circle bird = new Circle(15);
-            bird.setCenterX(game.getFieldOfObstacle().getBird().get(i).getX() * 30 + 10);
-            bird.setCenterY(game.getFieldOfObstacle().getBird().get(i).getY() * 30 + 10);
-            bird.setFill(Color.CYAN);
+            Circle bird = new Circle(20);
+            bird.setCenterX(game.getFieldOfObstacle().getBird().get(i).getX() * this.heightMultiple);
+            bird.setCenterY(game.getFieldOfObstacle().getBird().get(i).getY() * this.widthMultiple);
+            File fileBird = new File(createFilePath(BIRD_PATH));
+            javafx.scene.image.Image imgBird = new Image(fileBird.getAbsoluteFile().toURI().toString());
+            bird.setFill(new ImagePattern(imgBird));
             birds.add(bird);
         }
         for (Circle bird : birds) {
             root.getChildren().addAll(bird);
         }
+    }
 
+    public void animateBird(){
+        if(birds.size() < game.getFieldOfObstacle().getBird().size()) {
+            Circle newBird = new Circle(20);
+            File fileBird = new File(createFilePath(BIRD_PATH));
+            javafx.scene.image.Image imgBird = new Image(fileBird.getAbsoluteFile().toURI().toString());
+            newBird.setFill(new ImagePattern(imgBird));
+            birds.add(newBird);
+            root.getChildren().add(newBird);
+        }
+        for (int i = 0; i < game.getFieldOfObstacle().getBird().size(); i++) {
+            birds.get(i).setCenterX(game.getFieldOfObstacle().getBird().get(i).getY() * heightMultiple);
+            birds.get(i).setCenterY(game.getFieldOfObstacle().getBird().get(i).getX() * widthMultiple);
+        }
+    }
+
+    private void createGround(){
         for (int i = 0; i < this.game.getFieldOfObstacle().getGround().size(); i++) {
-            Rectangle ground = new Rectangle(30, 10);
-            ground.setX(game.getFieldOfObstacle().getGround().get(i).getX() * 30 + 20);
-            ground.setY(game.getFieldOfObstacle().getGround().get(i).getY() * 30 + 20);
-            ground.setFill(Color.BROWN);
+            Rectangle ground = new Rectangle(1200, 12);
+            ground.setX(game.getFieldOfObstacle().getGround().get(i).getX() * this.heightMultiple);
+            ground.setY(game.getFieldOfObstacle().getGround().get(i).getY() * this.widthMultiple);
+            File fileGround = new File(createFilePath(GROUND_PATH));
+            javafx.scene.image.Image imgBird = new Image(fileGround.getAbsoluteFile().toURI().toString());
+            ground.setFill(new ImagePattern(imgBird));
             grounds.add(ground);
         }
         for (Rectangle ground : grounds) {
             root.getChildren().addAll(ground);
         }
+    }
+
+    public void animateGroud(){
+        if(grounds.size() < game.getFieldOfObstacle().getGround().size()) {
+            Rectangle newGround = new Rectangle(1200, 12);
+            File fileGround = new File(createFilePath(GROUND_PATH));
+            javafx.scene.image.Image imgBird = new Image(fileGround.getAbsoluteFile().toURI().toString());
+            newGround.setFill(new ImagePattern(imgBird));
+            grounds.add(newGround);
+            root.getChildren().add(newGround);
+        }
+        for (int i = 0; i < game.getFieldOfObstacle().getGround().size(); i++) {
+            grounds.get(i).setX(game.getFieldOfObstacle().getGround().get(i).getY() * heightMultiple);
+            grounds.get(i).setY(game.getFieldOfObstacle().getGround().get(i).getX() * widthMultiple);
+        }
+    }
+
+    public void handle(KeyEvent arg0) {
+        if (game.getFieldOfObstacle().isInGame() && game.getTrex().lookForFeetOnTheGround()) {
+            game.getTrex().setJump(arg0.getCode() == KeyCode.SPACE);
+        }
+    }
+
+    private void createBackground(){
+        String BG_PATH = "\\img\\background.jpg";
+        File file = new File(createFilePath(BG_PATH));
+        javafx.scene.image.Image img = new Image(file.getAbsoluteFile().toURI().toString());
+        BackgroundImage bgImg = new BackgroundImage(img,
+                BackgroundRepeat.REPEAT,
+                BackgroundRepeat.REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        pane.setBackground(new Background(bgImg));
+    }
+
+    private void deleteOutOfViewObstacle(){
+        if(fieldOfPalms.size() > game.getFieldOfObstacle().getPalm().size())
+            fieldOfPalms.remove(0);
+        if (birds.size() > game.getFieldOfObstacle().getBird().size())
+            birds.remove(0);
+        if (grounds.size() > game.getFieldOfObstacle().getGround().size())
+            grounds.remove(0);
+    }
+
+    private void createContent(Stage stage) {
+        game.start();
+        this.pane = new AnchorPane();
+        this.pane.getChildren().addAll(root);
+        root.getChildren().add(canvas);
+        final Box keyboardNode = new Box();
+        keyboardNode.setFocusTraversable(true);
+        keyboardNode.requestFocus();
+        keyboardNode.setOnKeyPressed(this::handle);
+        root.getChildren().addAll(keyboardNode);
+        root.getChildren().add(menu());
+        createBackground();
+        createTrex();
+        createCactus();
+        createBirds();
+        createGround();
+
 
         new AnimationTimer() {
             @Override
@@ -132,47 +237,11 @@ public class MainGUI extends Application {
                     gc.strokeText("PLAYER NAME: ", 20, 50);
                     gc.fillText("SCORE: " + game.getFieldOfObstacle().getScore(), 20, 70);
                     gc.strokeText("SCORE: " + game.getFieldOfObstacle().getScore(), 20, 70);
-
-                    for (int i = 0; i < game.getTrex().getTrex().size(); i++) {
-                        tRexBody.get(i).setCenterX(game.getTrex().getTrex().get(i).getY()*30+20);
-                        tRexBody.get(i).setCenterY(game.getTrex().getTrex().get(i).getX()*30+20);
-                    }
-
-                    if (fieldOfPalms.size() < game.getFieldOfObstacle().getPalm().size()) {
-                        while (fieldOfPalms.size() < game.getFieldOfObstacle().getPalm().size()) {
-                            Rectangle newPalm = new Rectangle(10, 40);
-                            newPalm.setFill(Color.GREEN);
-                            fieldOfPalms.add(newPalm);
-                            root.getChildren().add(newPalm);
-                        }
-                    }
-                    for (int i = 0; i < game.getFieldOfObstacle().getPalm().size(); i++) {
-                        fieldOfPalms.get(i).setX(game.getFieldOfObstacle().getPalm().get(i).getY() * 30 + 20);
-                        fieldOfPalms.get(i).setY(game.getFieldOfObstacle().getPalm().get(i).getX() * 30 + 20);
-                    }
-
-                    if(birds.size() < game.getFieldOfObstacle().getBird().size()) {
-                        Circle newBird = new Circle(15);
-                        newBird.setFill(Color.CYAN);
-                        birds.add(newBird);
-                        root.getChildren().add(newBird);
-                    }
-                    for (int i = 0; i < game.getFieldOfObstacle().getBird().size(); i++) {
-                        birds.get(i).setCenterX(game.getFieldOfObstacle().getBird().get(i).getY() * 30 + 20);
-                        birds.get(i).setCenterY(game.getFieldOfObstacle().getBird().get(i).getX() * 30 + 20);
-                    }
-
-                    if(grounds.size() < game.getFieldOfObstacle().getGround().size()) {
-                        Rectangle newGround = new Rectangle(30, 10);
-                        newGround.setFill(Color.BROWN);
-                        grounds.add(newGround);
-                        root.getChildren().add(newGround);
-                    }
-                    for (int i = 0; i < game.getFieldOfObstacle().getGround().size(); i++) {
-                        grounds.get(i).setX(game.getFieldOfObstacle().getGround().get(i).getY() * 30 + 20);
-                        grounds.get(i).setY(game.getFieldOfObstacle().getGround().get(i).getX() * 30 + 20);
-                    }
-
+                    animateTrex();
+                    animateCactus();
+                    animateBird();
+                    animateGroud();
+                    deleteOutOfViewObstacle();
                     try {
                         TimeUnit.MILLISECONDS.sleep(200);
                     } catch (InterruptedException e) {
@@ -180,8 +249,8 @@ public class MainGUI extends Application {
                     }
                 }
                 else {
-                    gc.fillText("HAI PERSO!!!", GAME_HEIGHT/2, GAME_WIDTH/2);
-                    gc.strokeText("HAI PERSO!!!", GAME_HEIGHT/2, GAME_WIDTH/2);
+                    gc.fillText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
+                    gc.strokeText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
                     try {
                         TimeUnit.MILLISECONDS.sleep(200);
                     } catch (InterruptedException e) {
@@ -190,14 +259,8 @@ public class MainGUI extends Application {
                 }
             }
         }.start();
-        Scene scene = new Scene(root, this.GAME_WIDTH, this.GAME_HEIGHT);
+        Scene scene = new Scene(pane, this.GAME_WIDTH, this.GAME_HEIGHT);
         stage.setScene(scene);
         stage.show();
-    }
-
-    public void handle(KeyEvent arg0) {
-        if (game.getFieldOfObstacle().isInGame() && game.getTrex().lookForFeetOnTheGround()) {
-            game.getTrex().setJump(arg0.getCode() == KeyCode.SPACE);
-        }
     }
 }

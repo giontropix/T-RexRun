@@ -2,7 +2,7 @@ import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FieldOfObstacle extends Thread {
-    private final int fieldHeight = 6;
+    private final int fieldHeight = 8;
     private final int fieldWidth = 25;
     private boolean isInGame = true;
     private int score = 0;
@@ -65,14 +65,14 @@ public class FieldOfObstacle extends Thread {
     public void generateObstacle(){
         this.ground.add(new Coordinate(this.fieldHeight, this.fieldWidth - 1));
         double random = Math.random();
-        if(random < 0.03) { // probability to add a big palm
+        if(random <= 0.1) { // probability to add a big palm
             this.palm.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
             this.palm.add(new Coordinate(this.fieldHeight - 2, this.fieldWidth - 1));
         }
-        else if(random >= 1 && random <= 1.05) { //probability to add a little palm
+        else if(random > 0.1 && random <= 0.5) { //probability to add a little palm
             this.palm.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
         }
-        else if(random > 8 && random <= 8.02) { //probability to add a bird
+        else if(random > 0.8 && random <= 0.81) { //probability to add a bird
             int randomHeight = ThreadLocalRandom.current().nextInt(3, this.fieldHeight - 1);
             this.bird.add(new Coordinate(randomHeight, this.fieldWidth - 1));
         }
