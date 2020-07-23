@@ -11,7 +11,7 @@ public class FieldOfObstacle extends Thread {
     private final Vector<Coordinate> ground = new Vector<>();
 
     public FieldOfObstacle(){
-        this.generateObstacle();
+        this.generateGround();
     }
 
     @Override
@@ -60,6 +60,12 @@ public class FieldOfObstacle extends Thread {
 
     public void setInGame(boolean inGame) {
         this.isInGame = inGame;
+    }
+
+    public void generateGround(){
+        for (int i = 1; i < this.fieldWidth - 1; i++) {
+            this.ground.add(new Coordinate(this.fieldHeight, i));
+        }
     }
 
     public void generateObstacle(){
