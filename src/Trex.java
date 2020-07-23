@@ -31,6 +31,10 @@ public class Trex extends Thread {
         return tRex;
     }
 
+    public boolean isJump() {
+        return isJump;
+    }
+
     public void setJump(boolean jump) {
         this.isJump = jump;
     }

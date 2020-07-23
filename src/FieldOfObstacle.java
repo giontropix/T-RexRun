@@ -65,11 +65,11 @@ public class FieldOfObstacle extends Thread {
     public void generateObstacle(){
         this.ground.add(new Coordinate(this.fieldHeight, this.fieldWidth - 1));
         double random = Math.random();
-        if(random <= 0.1) { // probability to add a big palm
+        if(random <= 0.05) { // probability to add a big palm
             this.palm.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
             this.palm.add(new Coordinate(this.fieldHeight - 2, this.fieldWidth - 1));
         }
-        else if(random > 0.1 && random <= 0.5) { //probability to add a little palm
+        else if(random > 0.1 && random <= 0.15) { //probability to add a little palm
             this.palm.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
         }
         else if(random > 0.8 && random <= 0.81) { //probability to add a bird

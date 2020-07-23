@@ -11,6 +11,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
@@ -22,17 +24,20 @@ import java.util.concurrent.TimeUnit;
 public class MainGUI extends Application {
     private AnchorPane pane;
     Group root = new Group();
-    Canvas canvas = new Canvas(500, 500);
-    GraphicsContext gc = canvas.getGraphicsContext2D();
     String name = "Steve Jobs";
     PrinterLevel game = new PrinterLevel(this.name);
     ScoreManager score = new ScoreManager();
+    int heightMultiple = 35;
+    int widthMultiple = 30;
+    Canvas canvas = new Canvas(game.getFieldOfObstacle().getFieldWidth() * widthMultiple, game.getFieldOfObstacle().getFieldHeight() * heightMultiple);
+    GraphicsContext gc = canvas.getGraphicsContext2D();
+
+
     Vector<Rectangle> fieldOfPalms = new Vector<>();
     Vector<Circle> birds = new Vector<>();
     Vector<Rectangle> grounds = new Vector<>();
-    Rectangle trex = new Rectangle(60, 60);
-    int heightMultiple = 35;
-    int widthMultiple = 30;
+    Rectangle trex;
+
     private final double GAME_HEIGHT = game.getFieldOfObstacle().getFieldHeight() * heightMultiple;
     private final double GAME_WIDTH = game.getFieldOfObstacle().getFieldWidth() * widthMultiple;
     private final String BIRD_PATH = "\\img\\bird.png";
@@ -55,7 +60,7 @@ public class MainGUI extends Application {
         return finalPath + path;
     }
 
-    private VBox menu(){
+    /*private VBox menu(){
         final Menu menuOptions = new Menu("Options");
         MenuItem subMenuNewGame = new MenuItem("New Game");
         MenuItem subMenuRanking = new MenuItem("Ranking");
@@ -72,26 +77,26 @@ public class MainGUI extends Application {
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menuOptions);
         return new VBox(menuBar);
-    }
+    }*/
 
     private void createTrex(){
-        trex.setX(game.getTrex().gettRex().getY() * this.heightMultiple);
-        trex.setY(game.getTrex().gettRex().getX() * this.widthMultiple);
+        this.trex = new Rectangle(40, 40);
+        this.trex.setX(this.game.getTrex().gettRex().getY() * this.heightMultiple);
+        this.trex.setY(this.game.getTrex().gettRex().getX() * this.widthMultiple);
         String TREX_PATH = "\\img\\Dino-stand.png";
         File file = new File(createFilePath(TREX_PATH));
         javafx.scene.image.Image img = new Image(file.getAbsoluteFile().toURI().toString());
-        trex.setFill(new ImagePattern(img));
-        root.getChildren().add(trex);
+        this.trex.setFill(new ImagePattern(img));
+        this.root.getChildren().add(this.trex);
     }
 
     public void animateTrex(){
         trex.setX(game.getTrex().gettRex().getY() * heightMultiple);
-        trex.setY(game.getTrex().gettRex().getX() * widthMultiple - 25);
+        trex.setY(game.getTrex().gettRex().getX() * widthMultiple - 5);
     }
 
     private void createCactus(){
         for (int i = 0; i < this.game.getFieldOfObstacle().getPalm().size(); i++) {
-
             Rectangle palm = new Rectangle(30, 30);
             palm.setX(game.getFieldOfObstacle().getPalm().get(i).getX() * this.heightMultiple);
             palm.setY(game.getFieldOfObstacle().getPalm().get(i).getY() * this.widthMultiple);
@@ -219,29 +224,39 @@ public class MainGUI extends Application {
         keyboardNode.requestFocus();
         keyboardNode.setOnKeyPressed(this::handle);
         root.getChildren().addAll(keyboardNode);
-        root.getChildren().add(menu());
+        //root.getChildren().add(menu());
         createBackground();
         createTrex();
         createCactus();
         createBirds();
         createGround();
+        Media roar = new Media(new File(createFilePath("\\sound\\trex_roar.mp3")).toURI().toString());
+        MediaPlayer mediaPlayerRoar = new MediaPlayer(roar);
+
+        Media backgroundAudio = new Media(new File(createFilePath("\\sound\\Welcome_to_Jurassic_Park_background.mp3")).toURI().toString());
+        MediaPlayer mediaPlayerBackground = new MediaPlayer(backgroundAudio);
 
 
         new AnimationTimer() {
             @Override
             public void handle(long l) {
-                gc.clearRect(0, 0, 512,512);
+                gc.clearRect(0, 0, game.getFieldOfObstacle().getFieldWidth() * widthMultiple,game.getFieldOfObstacle().getFieldHeight() * heightMultiple);
                 if(game.getFieldOfObstacle().isInGame()) {
+                    mediaPlayerBackground.play();
                     gc.setFont(Font.font(20));
-                    gc.fillText("PLAYER NAME: ", 20, 50);
-                    gc.strokeText("PLAYER NAME: ", 20, 50);
-                    gc.fillText("SCORE: " + game.getFieldOfObstacle().getScore(), 20, 70);
-                    gc.strokeText("SCORE: " + game.getFieldOfObstacle().getScore(), 20, 70);
+                    //gc.fillText("PLAYER NAME: ", 450, 50);
+                    //gc.strokeText("PLAYER NAME: ", 450, 50);
+                    gc.fillText("SCORE: " + game.getFieldOfObstacle().getScore(), 600, 30);
+                    gc.strokeText("SCORE: " + game.getFieldOfObstacle().getScore(), 600, 30);
                     animateTrex();
                     animateCactus();
                     animateBird();
                     animateGroud();
                     deleteOutOfViewObstacle();
+                    if (game.getTrex().isJump()) {
+                        mediaPlayerRoar.play();
+                    }
+                    else mediaPlayerRoar.stop();
                     try {
                         TimeUnit.MILLISECONDS.sleep(200);
                     } catch (InterruptedException e) {
@@ -251,6 +266,7 @@ public class MainGUI extends Application {
                 else {
                     gc.fillText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
                     gc.strokeText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
+                    mediaPlayerBackground.stop();
                     try {
                         TimeUnit.MILLISECONDS.sleep(200);
                     } catch (InterruptedException e) {
