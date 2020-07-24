@@ -5,7 +5,7 @@ public class Trex extends Thread {
     private final Coordinate tRex;
 
     public Trex() {
-        tRex = new Coordinate(5,5);
+        tRex = new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1,5);
     }
 
     @Override
@@ -20,7 +20,7 @@ public class Trex extends Thread {
                      this.lookForFeetOnTheGround();
                      this.setGravity();
                  }
-                 Thread.sleep(this.fieldOfObstacle.speedUpGame()/2);
+                 Thread.sleep(200);
             } while (this.fieldOfObstacle.isInGame());
         } catch (InterruptedException e) {
             e.printStackTrace();

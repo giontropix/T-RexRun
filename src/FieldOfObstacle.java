@@ -21,7 +21,6 @@ public class FieldOfObstacle extends Thread {
                 this.generateObstacle();
                 this.moveObstacle();
                 this.score++;
-                this.calculateScoreFromObstacle();
                 this.deleteOutOfViewObstacle();
                 Thread.sleep (this.speedUpGame());
             } while(this.isInGame);
@@ -54,6 +53,10 @@ public class FieldOfObstacle extends Thread {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public boolean isInGame() {
         return this.isInGame;
     }
@@ -69,17 +72,17 @@ public class FieldOfObstacle extends Thread {
     }
 
     public void generateObstacle(){
-        double random = Math.random();
-        if(random <= 0.05) { // probability to add a big cactus
-            this.cactus.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
-            this.cactus.add(new Coordinate(this.fieldHeight - 2, this.fieldWidth - 1));
-        }
-        else if(random > 0.1 && random <= 0.15) { //probability to add a little cactus
-            this.cactus.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
-        }
-        else if(random > 0.8 && random <= 0.81) { //probability to add a bird
-            int randomHeight = ThreadLocalRandom.current().nextInt(3, this.fieldHeight - 1);
-            this.bird.add(new Coordinate(randomHeight, this.fieldWidth - 1));
+        if (this.score % 5 == 0) {
+            double random = Math.random();
+            if (random <= 0.25) { // probability to add a big cactus
+                this.cactus.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
+            } else if (random > 0.25 && random <= 0.4) { //probability to add a little cactus
+                this.cactus.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
+                this.cactus.add(new Coordinate(this.fieldHeight - 2, this.fieldWidth - 1));
+            } else if (random > 0.4 && random <= 0.5) { //probability to add a bird
+                int randomHeight = ThreadLocalRandom.current().nextInt(this.fieldHeight - 5, this.fieldHeight - 1);
+                this.bird.add(new Coordinate(randomHeight, this.fieldWidth - 1));
+            }
         }
     }
 
@@ -101,19 +104,10 @@ public class FieldOfObstacle extends Thread {
             this.ground.remove(0);
     }
 
-    public void calculateScoreFromObstacle() {
-        if (this.isInGame) {
-            if (this.cactus.contains(new Coordinate(this.fieldHeight - 1, 4)))
-                this.score += 10;
-            if (this.cactus.contains(new Coordinate(this.fieldHeight - 2, 4)))
-                this.score += 10;
-        }
-    }
-
-    public int speedUpGame() {
+    public long speedUpGame() {
         if (this.score < 200)
             return 400;
-        else if (this.score < 400)
+        if (this.score < 400)
             return 200;
         else return 100;
     }

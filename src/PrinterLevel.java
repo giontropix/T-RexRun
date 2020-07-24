@@ -12,9 +12,8 @@ public class PrinterLevel extends Thread {
     public void run(){
         try {
              do {
+                 this.ddScoreFromObstacle();
                  this.crashGameOver();
-                 System.out.println(this.fieldOfObstacle.getCactus().size());
-                 System.out.println("\nIN GAME: " + this.fieldOfObstacle.isInGame());
                  System.out.println("\nPLAYER NAME: " + this.playerName.toUpperCase());
                  System.out.println("SCORE: " + this.fieldOfObstacle.getScore() + "\n");
                  System.out.println(this.toString());
@@ -31,6 +30,25 @@ public class PrinterLevel extends Thread {
 
     public FieldOfObstacle getFieldOfObstacle() {
         return this.fieldOfObstacle;
+    }
+
+    private void ddScoreFromObstacle() {
+        if (this.fieldOfObstacle.getCactus().size() > 0) {
+            if (this.fieldOfObstacle.getCactus().contains(new Coordinate(this.getFieldOfObstacle().getFieldHeight() - 2, 4))) {
+                this.fieldOfObstacle.setScore(this.fieldOfObstacle.getScore() + 10);
+                return;
+            }
+            if (this.fieldOfObstacle.getCactus().contains(new Coordinate(this.getFieldOfObstacle().getFieldHeight() - 1, 4))) {
+                this.fieldOfObstacle.setScore(this.fieldOfObstacle.getScore() + 5);
+            }
+        }
+        if (this.fieldOfObstacle.getBird().size() > 0) {
+            for (int i = 0; i < this.fieldOfObstacle.getBird().size(); i++) {
+                if ((this.trex.gettRex().getX() < this.getFieldOfObstacle().getBird().get(i).getX()) && (this.trex.gettRex().getY() == this.getFieldOfObstacle().getBird().get(i).getY())) {
+                    this.fieldOfObstacle.setScore(this.fieldOfObstacle.getScore() + 15);
+                }
+            }
+        }
     }
 
     private void crashGameOver(){
