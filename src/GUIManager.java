@@ -64,7 +64,6 @@ public class GUIManager extends Application {
     }
 
     private void reset(){
-
         root = new Group();
         game = new PrinterLevel(this.name);
         score = new ScoreManager();
@@ -80,7 +79,7 @@ public class GUIManager extends Application {
         subMenuNewGame.setOnAction(e -> {
             stage.close();
             this.reset();
-            stage.setScene(createContent(stage));
+            this.start(stage);
                 });
         MenuItem subMenuRanking = new MenuItem("Ranking");
         subMenuRanking.setOnAction(e -> {
