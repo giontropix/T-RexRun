@@ -47,10 +47,6 @@ public class GUIManager extends Application {
     Media backgroundAudio = new Media(new File(createFilePath("\\sound\\Welcome_to_Jurassic_Park_background.mp3")).toURI().toString());
     MediaPlayer mediaPlayerBackground = new MediaPlayer(backgroundAudio);
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
     public void start(Stage stage) {
         stage.setTitle("T-Rex Run!");
@@ -196,15 +192,15 @@ public class GUIManager extends Application {
                     gc.setFont(Font.font(20));
                     //gc.fillText("PLAYER NAME: ", 450, 50);
                     //gc.strokeText("PLAYER NAME: ", 450, 50);
-                    gc.fillText("SCORE: " + game.getFieldOfObstacle().getScore(), 620, 20);
-                    gc.strokeText("SCORE: " + game.getFieldOfObstacle().getScore(), 620, 20);
+                    gc.fillText("SCORE: " + game.getFieldOfObstacle().getScore(), 620, 30);
+                    gc.strokeText("SCORE: " + game.getFieldOfObstacle().getScore(), 620, 30);
                     if (game.getFieldOfObstacle().speedUpGame() == 200 && game.getFieldOfObstacle().getScore() < 230){
-                        gc.fillText("SPEED UP!", 620, 40);
-                        gc.strokeText("SPEED UP!", 620, 40);
+                        gc.fillText("SPEED UP!", 620, 50);
+                        gc.strokeText("SPEED UP!", 620, 50);
                     }
                     if (game.getFieldOfObstacle().speedUpGame() == 100 && game.getFieldOfObstacle().getScore() < 440){
-                        gc.fillText("MAX SPEED!", 620, 40);
-                        gc.strokeText("MAX SPEED!", 620, 40);
+                        gc.fillText("MAX SPEED!", 620, 50);
+                        gc.strokeText("MAX SPEED!", 620, 50);
                     }
 
                     //ANIMATING TREX
