@@ -20,7 +20,7 @@ public class Trex extends Thread {
                      this.lookForFeetOnTheGround();
                      this.setGravity();
                  }
-                 Thread.sleep(500);
+                 Thread.sleep(200);
             } while (this.fieldOfObstacle.isInGame());
         } catch (InterruptedException e) {
             e.printStackTrace();
