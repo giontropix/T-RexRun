@@ -23,7 +23,7 @@ public class FieldOfObstacle extends Thread {
                 this.score++;
                 this.calculateScoreFromObstacle();
                 this.deleteOutOfViewObstacle();
-                Thread.sleep (this.increaseSpeedAccordingToPoints());
+                Thread.sleep (this.speedUpGame());
             } while(this.isInGame);
         } catch(InterruptedException e) {
             e.printStackTrace();
@@ -110,11 +110,11 @@ public class FieldOfObstacle extends Thread {
         }
     }
 
-    public int increaseSpeedAccordingToPoints() {
+    public int speedUpGame() {
         if (this.score < 200)
-            return 200;
+            return 400;
         else if (this.score < 400)
-            return 100;
-        else return 50;
+            return 200;
+        else return 100;
     }
 }

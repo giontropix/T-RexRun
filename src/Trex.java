@@ -20,7 +20,7 @@ public class Trex extends Thread {
                      this.lookForFeetOnTheGround();
                      this.setGravity();
                  }
-                 Thread.sleep(200);
+                 Thread.sleep(this.fieldOfObstacle.speedUpGame()/2);
             } while (this.fieldOfObstacle.isInGame());
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -28,11 +28,11 @@ public class Trex extends Thread {
     }
 
     public Coordinate gettRex() {
-        return tRex;
+        return this.tRex;
     }
 
     public boolean isJump() {
-        return isJump;
+        return this.isJump;
     }
 
     public void setJump(boolean jump) {
@@ -45,7 +45,7 @@ public class Trex extends Thread {
 
     public void jump(){
         if(!lookForHeadBetweenClouds())
-            tRex.setX(tRex.getX() - 1);
+            this.tRex.setX(this.tRex.getX() - 1);
         else this.isJump = false;
     }
 
@@ -56,7 +56,7 @@ public class Trex extends Thread {
     public void setGravity() {
         if (!lookForFeetOnTheGround()) {
             this.isJump = false;
-            tRex.setX(tRex.getX() + 1);
+            this.tRex.setX(this.tRex.getX() + 1);
         }
     }
 }

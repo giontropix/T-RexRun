@@ -18,7 +18,6 @@ import javafx.util.Duration;
 import java.io.File;
 
 public class MainGUI extends Application {
-    private AnchorPane pane;
     Group root = new Group();
     String name = "Steve Jobs";
     PrinterLevel game = new PrinterLevel(this.name);
@@ -80,7 +79,6 @@ public class MainGUI extends Application {
         ImageView ground1 = new ImageView(imgGround);
         background2.setX(3181);
         ground1.setX(1200);
-        //ground1.setY(game.getFieldOfObstacle().getGround().get(0).getX() * widthMultiple);
         root.getChildren().addAll(background, background2, ground, ground1);
 
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200000), background);
@@ -93,14 +91,14 @@ public class MainGUI extends Application {
         translateTransition2.setToX(-3181);
         translateTransition2.setInterpolator(Interpolator.LINEAR);
 
-        TranslateTransition translateTransition3 = new TranslateTransition(Duration.millis(100000), ground);
+        TranslateTransition translateTransition3 = new TranslateTransition(Duration.millis(80000), ground);
         translateTransition3.setFromX(0);
         translateTransition3.setFromY(game.getFieldOfObstacle().getGround().get(0).getX() * widthMultiple);
         translateTransition3.setToX(-1200);
         translateTransition3.setToY(game.getFieldOfObstacle().getGround().get(0).getX() * widthMultiple);
         translateTransition3.setInterpolator(Interpolator.LINEAR);
 
-        TranslateTransition translateTransition4 = new TranslateTransition(Duration.millis(100000), ground1);
+        TranslateTransition translateTransition4 = new TranslateTransition(Duration.millis(80000), ground1);
         translateTransition4.setFromX(0);
         translateTransition4.setFromY(game.getFieldOfObstacle().getGround().get(0).getX() * widthMultiple);
         translateTransition4.setToX(-1200);
@@ -120,8 +118,8 @@ public class MainGUI extends Application {
     private void createContent(Stage stage) {
         game.start();
         initializeBackground();
-        this.pane = new AnchorPane();
-        this.pane.getChildren().addAll(root);
+        AnchorPane pane = new AnchorPane();
+        pane.getChildren().addAll(root);
         root.getChildren().add(canvas);
 
         Scene scene = new Scene(pane, this.GAME_WIDTH, this.GAME_HEIGHT);
@@ -188,6 +186,8 @@ public class MainGUI extends Application {
                     gc.fillText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
                     gc.strokeText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
                     mediaPlayerBackground.stop();
+                    score.getListOfScore().add(new Score(name.toUpperCase(), game.getFieldOfObstacle().getScore()));
+                    score.store();
                 }
             }
         }.start();

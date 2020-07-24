@@ -1,16 +1,22 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        int choice;
+        int choice = 0;
         String name;
         ScoreManager scoreManager = new ScoreManager();
         scoreManager.load();
         do {
             System.out.println("\n\t\t\t\t--------> T-REX RUN! <--------");
-            System.out.println("Press: \n - 1 to play\n - 2 for ranking list\n - 0 to exit");
-            Scanner scanChoice = new Scanner(System.in);
-            choice = scanChoice.nextInt();
+            try {
+                System.out.println("Press: \n - 1 to play\n - 2 for ranking list\n - 0 to exit");
+                Scanner scanChoice = new Scanner(System.in);
+                choice = scanChoice.nextInt();
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Wrong value inserted");
+            }
             switch (choice) {
                 case 1:
                     System.out.println("Insert name");
@@ -20,7 +26,12 @@ public class Main {
                     printerLevel.start();
                     do {
                         Scanner scan = new Scanner(System.in);
-                        String answer = scan.nextLine();
+                        String answer = "";
+                        try {
+                            answer = scan.nextLine();
+                        } catch (InputMismatchException e){
+                            System.out.println("Wrong value inserted");
+                        }
                         if (answer.equalsIgnoreCase("s")) {
                             if (printerLevel.getTrex().lookForFeetOnTheGround())
                                 printerLevel.getTrex().setJump(true);
@@ -47,7 +58,7 @@ public class Main {
                     System.out.println("See you for the next game, good bye!");
                     return;
                 default:
-                    System.out.println("Scelta errata");
+                    System.out.println("Wrong choose");
             }
         } while (true);
     }

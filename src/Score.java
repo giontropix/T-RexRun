@@ -10,11 +10,11 @@ public class Score implements Serializable, Comparable<Score> {
     }
 
     public String getPlayerName() {
-        return playerName;
+        return this.playerName;
     }
 
     public int getTotalScore() {
-        return totalScore;
+        return this.totalScore;
     }
 
     @Override
