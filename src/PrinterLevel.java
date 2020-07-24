@@ -18,7 +18,7 @@ public class PrinterLevel extends Thread {
                  System.out.println("\nPLAYER NAME: " + this.playerName.toUpperCase());
                  System.out.println("SCORE: " + this.fieldOfObstacle.getScore() + "\n");
                  System.out.println(this.toString());
-                 Thread.sleep(500);
+                 Thread.sleep(this.fieldOfObstacle.increaseSpeedAccordingToPoints());
             } while(this.fieldOfObstacle.isInGame());
         } catch (InterruptedException e) {
             e.printStackTrace();
