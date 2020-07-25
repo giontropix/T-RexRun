@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class GUIManager extends Application {
     Group root = new Group();
-    String name = "Steve Jobs";
+    String name;
     PrinterLevel game = new PrinterLevel(this.name);
     ScoreManager score = new ScoreManager();
     int heightMultiple = 35;
@@ -47,10 +47,15 @@ public class GUIManager extends Application {
     Media backgroundAudio = new Media(new File(createFilePath("\\sound\\Welcome_to_Jurassic_Park_background.mp3")).toURI().toString());
     MediaPlayer mediaPlayerBackground = new MediaPlayer(backgroundAudio);
 
+    public GUIManager(String name){
+        this.name = name;
+    }
+
     @Override
     public void start(Stage stage) {
-        stage.setTitle("T-Rex Run!");
-        score.load();
+        stage.setTitle("T-Rex Run! Player Name: " + this.name);
+        reset();
+        this.score.load();
         createContent(stage);
     }
 
@@ -60,13 +65,15 @@ public class GUIManager extends Application {
     }
 
     private void reset(){
-        root = new Group();
-        game = new PrinterLevel(this.name);
-        score = new ScoreManager();
-        canvas = new Canvas(game.getFieldOfObstacle().getFieldWidth() * widthMultiple, game.getFieldOfObstacle().getFieldHeight() * heightMultiple);
-        gc = canvas.getGraphicsContext2D();
-        mediaPlayerBackground.stop();
-        mediaPlayerRoar.stop();
+        this.root = new Group();
+        this.game = new PrinterLevel(this.name);
+        this.score = new ScoreManager();
+        this.canvas = new Canvas(this.game.getFieldOfObstacle().getFieldWidth() * this.widthMultiple, this.game.getFieldOfObstacle().getFieldHeight() * this.heightMultiple);
+        this.gc = canvas.getGraphicsContext2D();
+        this.mediaPlayerBackground.stop();
+        this.mediaPlayerRoar.stop();
+        this.parallelTransitionGround.stop();
+        this.parallelTransitionBackground.stop();
     }
 
     private VBox menu(Stage stage){
@@ -81,7 +88,7 @@ public class GUIManager extends Application {
         subMenuRanking.setOnAction(e -> {
             ArrayList<String> test = new ArrayList<>();
             int ranking = 0;
-            for (Score listOfScore : score.getListOfScore()) {
+            for (Score listOfScore : this.score.getListOfScore()) {
                 test.add(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
                         ", Total Score: " + listOfScore.getTotalScore() + "\n");
             }
@@ -110,33 +117,33 @@ public class GUIManager extends Application {
     }
 
     public void inizializeGround() {
-        ImageView ground = new ImageView(imgGround);
-        ImageView ground1 = new ImageView(imgGround);
+        ImageView ground = new ImageView(this.imgGround);
+        ImageView ground1 = new ImageView(this.imgGround);
         ground1.setX(1200);
-        root.getChildren().addAll(ground, ground1);
+        this.root.getChildren().addAll(ground, ground1);
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(this.game.getFieldOfObstacle().speedUpGame() * 50), ground);
         translateTransition.setFromX(0);
-        translateTransition.setFromY(game.getFieldOfObstacle().getGround().get(0).getX() * widthMultiple);
+        translateTransition.setFromY(this.game.getFieldOfObstacle().getGround().get(0).getX() * this.widthMultiple);
         translateTransition.setToX(-1200);
-        translateTransition.setToY(game.getFieldOfObstacle().getGround().get(0).getX() * widthMultiple);
+        translateTransition.setToY(this.game.getFieldOfObstacle().getGround().get(0).getX() * this.widthMultiple);
         translateTransition.setInterpolator(Interpolator.LINEAR);
 
         TranslateTransition translateTransition2 = new TranslateTransition(Duration.millis(this.game.getFieldOfObstacle().speedUpGame() * 50), ground1);
         translateTransition2.setFromX(0);
-        translateTransition2.setFromY(game.getFieldOfObstacle().getGround().get(0).getX() * widthMultiple);
+        translateTransition2.setFromY(this.game.getFieldOfObstacle().getGround().get(0).getX() * this.widthMultiple);
         translateTransition2.setToX(-1200);
-        translateTransition2.setToY(game.getFieldOfObstacle().getGround().get(0).getX() * widthMultiple);
+        translateTransition2.setToY(this.game.getFieldOfObstacle().getGround().get(0).getX() * this.widthMultiple);
         translateTransition2.setInterpolator(Interpolator.LINEAR);
 
-        parallelTransitionGround = new ParallelTransition(translateTransition, translateTransition2);
-        parallelTransitionGround.setCycleCount(Animation.INDEFINITE);
+        this.parallelTransitionGround = new ParallelTransition(translateTransition, translateTransition2);
+        this.parallelTransitionGround.setCycleCount(Animation.INDEFINITE);
     }
 
     public void initializeBackground() {
-        ImageView background = new ImageView(img);
-        ImageView background2 = new ImageView(img);
+        ImageView background = new ImageView(this.img);
+        ImageView background2 = new ImageView(this.img);
         background2.setX(3181);
-        root.getChildren().addAll(background, background2);
+        this.root.getChildren().addAll(background, background2);
 
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200000), background);
         translateTransition.setFromX(0);
@@ -148,23 +155,23 @@ public class GUIManager extends Application {
         translateTransition2.setToX(-3181);
         translateTransition2.setInterpolator(Interpolator.LINEAR);
 
-        parallelTransitionBackground = new ParallelTransition(translateTransition, translateTransition2);
-        parallelTransitionBackground.setCycleCount(Animation.INDEFINITE);
+        this.parallelTransitionBackground = new ParallelTransition(translateTransition, translateTransition2);
+        this.parallelTransitionBackground.setCycleCount(Animation.INDEFINITE);
     }
 
         public void handle(KeyEvent arg0) {
-        if (game.getFieldOfObstacle().isInGame() && game.getTrex().lookForFeetOnTheGround()) {
-            game.getTrex().setJump(arg0.getCode() == KeyCode.SPACE);
+        if (this.game.getFieldOfObstacle().isInGame() && game.getTrex().lookForFeetOnTheGround()) {
+            this.game.getTrex().setJump(arg0.getCode() == KeyCode.SPACE);
         }
     }
 
-    private Scene createContent(Stage stage) {
-        game.start();
+    private void createContent(Stage stage) {
+        this.game.start();
         initializeBackground();
         inizializeGround();
         AnchorPane pane = new AnchorPane();
-        pane.getChildren().addAll(root);
-        root.getChildren().add(canvas);
+        pane.getChildren().addAll(this.root);
+        this.root.getChildren().add(this.canvas);
         BorderPane borderPane = new BorderPane(pane);
         borderPane.setTop(menu(stage));
         Scene scene = new Scene(borderPane, this.GAME_WIDTH, this.GAME_HEIGHT);
@@ -174,11 +181,11 @@ public class GUIManager extends Application {
         keyboardNode.setFocusTraversable(true);
         keyboardNode.requestFocus();
         keyboardNode.setOnKeyPressed(this::handle);
-        root.getChildren().addAll(keyboardNode);
-        mediaPlayerBackground.setOnEndOfMedia(() -> mediaPlayerBackground.seek(Duration.ZERO));
-        mediaPlayerBackground.play();
-        parallelTransitionBackground.play();
-        parallelTransitionGround.play();
+        this.root.getChildren().addAll(keyboardNode);
+        this.mediaPlayerBackground.setOnEndOfMedia(() -> this.mediaPlayerBackground.seek(Duration.ZERO));
+        this.mediaPlayerBackground.play();
+        this.parallelTransitionBackground.play();
+        this.parallelTransitionGround.play();
         new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -206,14 +213,14 @@ public class GUIManager extends Application {
                     //ANIMATING TREX
                     gc.drawImage(imgTrex, game.getTrex().gettRex().getY() * heightMultiple, game.getTrex().gettRex().getX() * widthMultiple - 5);
                     //ANIMATING CACTUS
-                    boolean bigCactus = false;
+                    //boolean bigCactus = false;
                     for (int i = 0; i < game.getFieldOfObstacle().getCactus().size(); i++) {
                         if (game.getFieldOfObstacle().getCactus().contains(new Coordinate(game.getFieldOfObstacle().getCactus().get(i).getX(), game.getFieldOfObstacle().getCactus().get(i).getY()))
                         && game.getFieldOfObstacle().getCactus().contains(new Coordinate(game.getFieldOfObstacle().getCactus().get(i).getX() - 1, game.getFieldOfObstacle().getCactus().get(i).getY()))){
                             gc.drawImage(imgLittleSingleCactus, game.getFieldOfObstacle().getCactus().get(i).getY() * heightMultiple, game.getFieldOfObstacle().getCactus().get(i).getX() * widthMultiple - 5);
-                            bigCactus = true;
+                            //bigCactus = true;
                         }
-                        else if (game.getFieldOfObstacle().getCactus().contains(new Coordinate(game.getFieldOfObstacle().getCactus().get(i).getX(), game.getFieldOfObstacle().getCactus().get(i).getY()))
+                        /*else if (game.getFieldOfObstacle().getCactus().contains(new Coordinate(game.getFieldOfObstacle().getCactus().get(i).getX(), game.getFieldOfObstacle().getCactus().get(i).getY()))
                                 && game.getFieldOfObstacle().getCactus().contains(new Coordinate(game.getFieldOfObstacle().getCactus().get(i).getX(), game.getFieldOfObstacle().getCactus().get(i).getY() - 1))
                                 && !bigCactus){
                             gc.drawImage(imgLittleCoupleCactus, game.getFieldOfObstacle().getCactus().get(i).getY() * heightMultiple, game.getFieldOfObstacle().getCactus().get(i).getX() * widthMultiple - 5);
@@ -222,9 +229,9 @@ public class GUIManager extends Application {
                                 && game.getFieldOfObstacle().getCactus().contains(new Coordinate(game.getFieldOfObstacle().getCactus().get(i).getX(), game.getFieldOfObstacle().getCactus().get(i).getY() - 1))) {
                             gc.drawImage(imgLittleCoupleCactus, game.getFieldOfObstacle().getCactus().get(i).getY() * heightMultiple, game.getFieldOfObstacle().getCactus().get(i).getX() * widthMultiple);
                             bigCactus = false;
-                        } else {
+                        }*/ else {
                             gc.drawImage(imgLittleSingleCactus, game.getFieldOfObstacle().getCactus().get(i).getY() * heightMultiple, game.getFieldOfObstacle().getCactus().get(i).getX() * widthMultiple - 5);
-                            bigCactus = false;
+                            //bigCactus = false;
                         }
 
                     }
@@ -243,6 +250,5 @@ public class GUIManager extends Application {
             }
         }.start();
         stage.show();
-        return scene;
     }
 }
