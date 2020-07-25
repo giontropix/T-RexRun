@@ -72,8 +72,6 @@ public class GUIManager extends Application {
         this.gc = canvas.getGraphicsContext2D();
         this.mediaPlayerBackground.stop();
         this.mediaPlayerRoar.stop();
-        this.parallelTransitionGround.stop();
-        this.parallelTransitionBackground.stop();
     }
 
     private VBox menu(Stage stage){
