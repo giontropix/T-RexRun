@@ -23,4 +23,12 @@ public class Score implements Serializable, Comparable<Score> {
             return Integer.compare(o.totalScore, this.totalScore);
         else return this.playerName.compareTo(o.playerName);
     }
+
+    @Override
+    public boolean equals(Object point){
+        if( point instanceof Score){
+            Score p = (Score) point;
+            return this.playerName.equals(p.playerName) && this.totalScore == p.totalScore;
+        } else return false;
+    }
 }
