@@ -1,7 +1,7 @@
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class FieldOfObstacle extends Thread {
+public class Obstacle extends Thread {
     private final int fieldHeight = 8;
     private final int fieldWidth = 25;
     private boolean isInGame = true;
@@ -10,20 +10,20 @@ public class FieldOfObstacle extends Thread {
     private final Vector<Coordinate> bird = new Vector<>();
     private final Vector<Coordinate> ground = new Vector<>();
 
-    public FieldOfObstacle(){
+    public Obstacle(){
         this.generateGround();
     }
 
     @Override
     public void run() {
         try {
-            do {
+            while (this.isInGame) {
                 this.generateObstacle();
                 this.moveObstacle();
                 this.score++;
                 this.deleteOutOfViewObstacle();
                 Thread.sleep (this.speedUpGame());
-            } while(this.isInGame);
+            }
         } catch(InterruptedException e) {
             e.printStackTrace();
         }
@@ -65,13 +65,13 @@ public class FieldOfObstacle extends Thread {
         this.isInGame = inGame;
     }
 
-    public void generateGround(){
+    private void generateGround(){
         for (int i = 1; i < this.fieldWidth - 1; i++) {
             this.ground.add(new Coordinate(this.fieldHeight, i));
         }
     }
 
-    public void generateObstacle(){
+    private void generateObstacle(){
         if (this.score % 5 == 0) {
             double random = Math.random();
             if (random <= 0.25) { // probability to add a big cactus
@@ -86,7 +86,7 @@ public class FieldOfObstacle extends Thread {
         }
     }
 
-    public void moveObstacle(){
+    private void moveObstacle(){
         for (Coordinate coordinate : this.cactus) {
             coordinate.setY(coordinate.getY() - 1);
         }
@@ -95,7 +95,7 @@ public class FieldOfObstacle extends Thread {
         }
     }
 
-    public void deleteOutOfViewObstacle() {
+    private void deleteOutOfViewObstacle() { //TO AVOID THE POSSIBILITY TO FILL THE COLLECTION WITH HUNDREDS OF OBSTACLES
         if(this.cactus.size() > 0 && this.cactus.get(0).getY() < 0)
             this.cactus.remove(0);
         if(this.bird.size() > 0 && this.bird.get(0).getY() < 0)
@@ -109,6 +109,8 @@ public class FieldOfObstacle extends Thread {
             return 400;
         if (this.score < 400)
             return 200;
-        else return 100;
+        if (this.score < 600)
+            return 100;
+        else return 50;
     }
 }

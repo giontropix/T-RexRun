@@ -18,14 +18,14 @@ public class Score implements Serializable, Comparable<Score> {
     }
 
     @Override
-    public int compareTo(Score o) {
+    public int compareTo(Score o) { //OVERRIDED TO HAVE A RANKING LIST ORDERED BY SCORE AND IN CASE OF SAME SCORE ORDERED BY NAME
         if(o.totalScore != this.totalScore)
             return Integer.compare(o.totalScore, this.totalScore);
         else return this.playerName.compareTo(o.playerName);
     }
 
     @Override
-    public boolean equals(Object point){
+    public boolean equals(Object point){ //OVERRIDED BECAUSE WE NEED TO RECOGNISE THE LAST GAMER TO HAVE HIS RANKING POSITION IN GUIMANAGER
         if( point instanceof Score){
             Score p = (Score) point;
             return this.playerName.equals(p.playerName) && this.totalScore == p.totalScore;

@@ -1,24 +1,24 @@
 public class PrinterLevel extends Thread {
     private final Trex trex = new Trex();
-    private final FieldOfObstacle fieldOfObstacle = new FieldOfObstacle();
+    private final Obstacle obstacle = new Obstacle();
     private final String playerName;
 
     public PrinterLevel(String playerName) {
         this.playerName = playerName;
-        this.fieldOfObstacle.start();
+        this.obstacle.start();
         this.trex.start();
     }
 
     public void run(){
         try {
-             do {
-                 this.ddScoreFromObstacle();
+             while (this.obstacle.isInGame()) {
+                 this.addScoreFromJumpedObstacle();
                  this.crashGameOver();
-                 System.out.println("\nPLAYER NAME: " + this.playerName.toUpperCase());
-                 System.out.println("SCORE: " + this.fieldOfObstacle.getScore() + "\n");
-                 System.out.println(this.toString());
-                 Thread.sleep(this.fieldOfObstacle.speedUpGame());
-            } while(this.fieldOfObstacle.isInGame());
+                 //System.out.println("\nPLAYER NAME: " + this.playerName.toUpperCase());
+                 //System.out.println("SCORE: " + this.obstacle.getScore() + "\n");
+                 //System.out.println(this.toString());
+                 Thread.sleep(this.obstacle.speedUpGame());
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -28,52 +28,50 @@ public class PrinterLevel extends Thread {
         return this.trex;
     }
 
-    public FieldOfObstacle getFieldOfObstacle() {
-        return this.fieldOfObstacle;
+    public Obstacle getObstacle() {
+        return this.obstacle;
     }
 
-    private void ddScoreFromObstacle() {
-        if (this.fieldOfObstacle.getCactus().size() > 0) {
-            if (this.fieldOfObstacle.getCactus().contains(new Coordinate(this.getFieldOfObstacle().getFieldHeight() - 2, 4))) {
-                this.fieldOfObstacle.setScore(this.fieldOfObstacle.getScore() + 10);
-                return;
-            }
-            if (this.fieldOfObstacle.getCactus().contains(new Coordinate(this.getFieldOfObstacle().getFieldHeight() - 1, 4))) {
-                this.fieldOfObstacle.setScore(this.fieldOfObstacle.getScore() + 5);
-            }
+    private void addScoreFromJumpedObstacle() {
+        if (this.obstacle.getCactus().contains(new Coordinate(this.getObstacle().getFieldHeight() - 2, 4))) {
+            this.obstacle.setScore(this.obstacle.getScore() + 10);
+            return;
         }
-        if (this.fieldOfObstacle.getBird().size() > 0) {
-            for (int i = 0; i < this.fieldOfObstacle.getBird().size(); i++) {
-                if ((this.trex.gettRex().getX() < this.getFieldOfObstacle().getBird().get(i).getX()) && (this.trex.gettRex().getY() == this.getFieldOfObstacle().getBird().get(i).getY())) {
-                    this.fieldOfObstacle.setScore(this.fieldOfObstacle.getScore() + 15);
+        if (this.obstacle.getCactus().contains(new Coordinate(this.getObstacle().getFieldHeight() - 1, 4))) {
+            this.obstacle.setScore(this.obstacle.getScore() + 5);
+        }
+        if (this.obstacle.getBird().size() > 0) { //ADDED THIS CONDITION BECAUSE OF THE RARE POSSIBILITY A BIRD CAN APPEAR
+            for (int i = 0; i < this.obstacle.getBird().size(); i++) {
+                if ((this.trex.getTrex().getX() < this.getObstacle().getBird().get(i).getX()) && (this.trex.getTrex().getY() == this.getObstacle().getBird().get(i).getY())) {
+                    this.obstacle.setScore(this.obstacle.getScore() + 15);
                 }
             }
         }
     }
 
     private void crashGameOver(){
-        for (int i = 0; i < this.fieldOfObstacle.getCactus().size(); i++) {
-            if(this.trex.gettRex().equals(new Coordinate(this.fieldOfObstacle.getCactus().get(i).getX(), this.fieldOfObstacle.getCactus().get(i).getY())))
-                this.fieldOfObstacle.setInGame(false);
+        for (int i = 0; i < this.obstacle.getCactus().size(); i++) {
+            if(this.trex.getTrex().equals(new Coordinate(this.obstacle.getCactus().get(i).getX(), this.obstacle.getCactus().get(i).getY())))
+                this.obstacle.setInGame(false);
         }
-        for (int i = 0; i < this.fieldOfObstacle.getBird().size(); i++) {
-            if(this.trex.gettRex().equals(new Coordinate(this.fieldOfObstacle.getBird().get(i).getX(), this.fieldOfObstacle.getBird().get(i).getY())))
-                this.fieldOfObstacle.setInGame(false);
+        for (int i = 0; i < this.obstacle.getBird().size(); i++) {
+            if(this.trex.getTrex().equals(new Coordinate(this.obstacle.getBird().get(i).getX(), this.obstacle.getBird().get(i).getY())))
+                this.obstacle.setInGame(false);
         }
     }
 
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (int i = 1; i < this.fieldOfObstacle.getFieldHeight() + 1; i++) {
+        for (int i = 1; i < this.obstacle.getFieldHeight() + 1; i++) {
             result.append(i).append("\t").append("[");
-            for(int j = 1; j < this.fieldOfObstacle.getFieldWidth(); j++) {
-                if (this.fieldOfObstacle.getCactus().contains(new Coordinate(i, j)))
+            for(int j = 1; j < this.obstacle.getFieldWidth(); j++) {
+                if (this.obstacle.getCactus().contains(new Coordinate(i, j)))
                     result.append("\u001B[32m|\u001B[0m");
-                else if (this.fieldOfObstacle.getBird().contains(new Coordinate(i, j)))
+                else if (this.obstacle.getBird().contains(new Coordinate(i, j)))
                     result.append("\u001B[35m=\u001B[0m");
-                else if (this.trex.gettRex().equals(new Coordinate(i, j)))
+                else if (this.trex.getTrex().equals(new Coordinate(i, j)))
                     result.append("\u001B[31mO\u001B[0m");
-                else if (this.fieldOfObstacle.getGround().contains(new Coordinate(i, j))) {
+                else if (this.obstacle.getGround().contains(new Coordinate(i, j))) {
                     result.append("~");
                 }
                 else

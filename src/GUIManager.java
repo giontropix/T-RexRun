@@ -24,13 +24,13 @@ public class GUIManager extends Application {
     private Group root = new Group();
     private String playerName;
     private PrinterLevel printerLevel = new PrinterLevel(this.playerName);
-    private ScoreManager score = new ScoreManager();
+    private ScoreManager scoreManager = new ScoreManager();
     private final int heightMultiple = 35;
     private final int widthMultiple = 30;
-    private final double GAME_HEIGHT = printerLevel.getFieldOfObstacle().getFieldHeight() * heightMultiple;
-    private final double GAME_WIDTH = printerLevel.getFieldOfObstacle().getFieldWidth() * widthMultiple;
-    private Canvas canvas = new Canvas(printerLevel.getFieldOfObstacle().getFieldWidth() * widthMultiple, printerLevel.getFieldOfObstacle().getFieldHeight() * heightMultiple);
-    private GraphicsContext gc = canvas.getGraphicsContext2D();
+    private final double GAME_HEIGHT = printerLevel.getObstacle().getFieldHeight() * heightMultiple;
+    private final double GAME_WIDTH = printerLevel.getObstacle().getFieldWidth() * widthMultiple;
+    private Canvas canvas = new Canvas(printerLevel.getObstacle().getFieldWidth() * widthMultiple, printerLevel.getObstacle().getFieldHeight() * heightMultiple);
+    private GraphicsContext graphicCanvas = canvas.getGraphicsContext2D();
     private ParallelTransition parallelTransitionBackground;
     private ParallelTransition parallelTransitionGround;
     private final Image img = new Image(new File(createFilePath("\\img\\wide_background.jpg")).getAbsoluteFile().toURI().toString());
@@ -51,7 +51,7 @@ public class GUIManager extends Application {
     public void start(Stage stage) {
         stage.setTitle("T-Rex Run! Player Name: " + this.playerName);
         reset();
-        this.score.load();
+        this.scoreManager.load();
         createContent(stage);
     }
 
@@ -71,9 +71,9 @@ public class GUIManager extends Application {
     private void reset(){
         this.root = new Group();
         this.printerLevel = new PrinterLevel(this.playerName);
-        this.score = new ScoreManager();
-        this.canvas = new Canvas(this.printerLevel.getFieldOfObstacle().getFieldWidth() * this.widthMultiple, this.printerLevel.getFieldOfObstacle().getFieldHeight() * this.heightMultiple);
-        this.gc = canvas.getGraphicsContext2D();
+        this.scoreManager = new ScoreManager();
+        this.canvas = new Canvas(this.printerLevel.getObstacle().getFieldWidth() * this.widthMultiple, this.printerLevel.getObstacle().getFieldHeight() * this.heightMultiple);
+        this.graphicCanvas = canvas.getGraphicsContext2D();
         this.mediaPlayerBackground.stop();
         this.mediaPlayerRoar.stop();
     }
@@ -84,15 +84,14 @@ public class GUIManager extends Application {
         subMenuNewGame.setOnAction(e -> {
             stage.close();
             this.reset();
-            MainGUI gui = new MainGUI();
-            gui.start(stage);
-            //this.start(stage);
-                });
+            MainGUI mainGUI = new MainGUI();
+            mainGUI.start(stage);
+        });
         MenuItem subMenuRanking = new MenuItem("Ranking");
         subMenuRanking.setOnAction(e -> {
             TilePane secondaryLayout = new TilePane();
             int ranking = 1;
-            for (Score listOfScore : this.score.getListOfScore()) {
+            for (Score listOfScore : this.scoreManager.getListOfScore()) {
                 Label secondLabel = new Label(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
                         ", Total Score: " + listOfScore.getTotalScore() + "\n");
                 secondLabel.setAlignment(Pos.TOP_LEFT);
@@ -129,18 +128,18 @@ public class GUIManager extends Application {
         ground1.setX(1200);
         this.root.getChildren().addAll(ground, ground1);
         //FIST PICTURE TO SLIDE
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(this.printerLevel.getFieldOfObstacle().speedUpGame() * 50), ground);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(this.printerLevel.getObstacle().speedUpGame() * 50), ground);
         translateTransition.setFromX(0);
-        translateTransition.setFromY(this.printerLevel.getFieldOfObstacle().getGround().get(0).getX() * this.widthMultiple);
+        translateTransition.setFromY(this.printerLevel.getObstacle().getGround().get(0).getX() * this.widthMultiple);
         translateTransition.setToX(-1200);
-        translateTransition.setToY(this.printerLevel.getFieldOfObstacle().getGround().get(0).getX() * this.widthMultiple);
+        translateTransition.setToY(this.printerLevel.getObstacle().getGround().get(0).getX() * this.widthMultiple);
         translateTransition.setInterpolator(Interpolator.LINEAR);
         //SECOND PICTURE TO SLIDE
-        TranslateTransition translateTransition2 = new TranslateTransition(Duration.millis(this.printerLevel.getFieldOfObstacle().speedUpGame() * 50), ground1);
+        TranslateTransition translateTransition2 = new TranslateTransition(Duration.millis(this.printerLevel.getObstacle().speedUpGame() * 50), ground1);
         translateTransition2.setFromX(0);
-        translateTransition2.setFromY(this.printerLevel.getFieldOfObstacle().getGround().get(0).getX() * this.widthMultiple);
+        translateTransition2.setFromY(this.printerLevel.getObstacle().getGround().get(0).getX() * this.widthMultiple);
         translateTransition2.setToX(-1200);
-        translateTransition2.setToY(this.printerLevel.getFieldOfObstacle().getGround().get(0).getX() * this.widthMultiple);
+        translateTransition2.setToY(this.printerLevel.getObstacle().getGround().get(0).getX() * this.widthMultiple);
         translateTransition2.setInterpolator(Interpolator.LINEAR);
         //ADD BOTH PICTURES TO TRANSITION
         this.parallelTransitionGround = new ParallelTransition(translateTransition, translateTransition2);
@@ -168,7 +167,7 @@ public class GUIManager extends Application {
     }
 
     private void handle(KeyEvent arg0) {
-        if (this.printerLevel.getFieldOfObstacle().isInGame() && printerLevel.getTrex().lookForFeetOnTheGround()) {
+        if (this.printerLevel.getObstacle().isInGame() && printerLevel.getTrex().lookForFeetOnTheGround()) { //TREX CAN JUMP ONLY IF IT'S ON THE GROUND
             this.printerLevel.getTrex().setJump(arg0.getCode() == KeyCode.SPACE);
         }
     }
@@ -180,7 +179,7 @@ public class GUIManager extends Application {
         initializeBackground();
         //INITIALIZE GROUND
         inizializeGround();
-        //PLACE WHERE COLLECT ALL THE ELEMENT OF GUI
+        //PLACE WHERE COLLECT ALL THE ELEMENTS OF THE GUI
         AnchorPane pane = new AnchorPane();
         //ADDING TO ROOT 2D GRAPHIC MANAGER
         this.root.getChildren().add(this.canvas);
@@ -208,57 +207,51 @@ public class GUIManager extends Application {
             @Override
             public void handle(long l) {
                 //CANVAS NEED TO BE CLEARED TO SHOW US NO GRAPHIC ARTIFACTS
-                gc.clearRect(0, 0, printerLevel.getFieldOfObstacle().getFieldWidth() * widthMultiple, printerLevel.getFieldOfObstacle().getFieldHeight() * heightMultiple);
-                gc.setFont(Font.font(20));
+                graphicCanvas.clearRect(0, 0, printerLevel.getObstacle().getFieldWidth() * widthMultiple, printerLevel.getObstacle().getFieldHeight() * heightMultiple);
+                graphicCanvas.setFont(Font.font(20));
                 //ADDING SCORE ON THE TOP-RIGHT
-                gc.fillText("SCORE: " + printerLevel.getFieldOfObstacle().getScore(), 620, 30);
-                gc.strokeText("SCORE: " + printerLevel.getFieldOfObstacle().getScore(), 620, 30);
+                graphicCanvas.fillText("SCORE: " + printerLevel.getObstacle().getScore(), 620, 30);
+                graphicCanvas.strokeText("SCORE: " + printerLevel.getObstacle().getScore(), 620, 30);
                 //MANAGING ALL THE ELEMENTS INTO THE GAME SESSION
-                if(printerLevel.getFieldOfObstacle().isInGame()) {
+                if(printerLevel.getObstacle().isInGame()) {
                     if (printerLevel.getTrex().isJump())
                         mediaPlayerRoar.play();
                     if(printerLevel.getTrex().lookForFeetOnTheGround())
                         mediaPlayerRoar.stop();
-                    if (printerLevel.getFieldOfObstacle().speedUpGame() == 200 && printerLevel.getFieldOfObstacle().getScore() < 230){
-                        gc.fillText("SPEED UP!", 620, 50);
-                        gc.strokeText("SPEED UP!", 620, 50);
+                    if (printerLevel.getObstacle().speedUpGame() == 200 && printerLevel.getObstacle().getScore() < 230){
+                        graphicCanvas.fillText("SPEED UP!", 620, 50);
+                        graphicCanvas.strokeText("SPEED UP!", 620, 50);
                     }
-                    if (printerLevel.getFieldOfObstacle().speedUpGame() == 100 && printerLevel.getFieldOfObstacle().getScore() < 440){
-                        gc.fillText("MAX SPEED!", 620, 50);
-                        gc.strokeText("MAX SPEED!", 620, 50);
+                    if (printerLevel.getObstacle().speedUpGame() == 100 && printerLevel.getObstacle().getScore() < 440){
+                        graphicCanvas.fillText("MAX SPEED!", 620, 50);
+                        graphicCanvas.strokeText("MAX SPEED!", 620, 50);
                     }
                     //ANIMATING TREX
-                    gc.drawImage(imgTrex, printerLevel.getTrex().gettRex().getY() * heightMultiple, printerLevel.getTrex().gettRex().getX() * widthMultiple - 5);
+                    graphicCanvas.drawImage(imgTrex, printerLevel.getTrex().getTrex().getY() * heightMultiple, printerLevel.getTrex().getTrex().getX() * widthMultiple - 5);
                     //ANIMATING CACTUS
-                    for (int i = 0; i < printerLevel.getFieldOfObstacle().getCactus().size(); i++) {
-                        if (printerLevel.getFieldOfObstacle().getCactus().contains(new Coordinate(printerLevel.getFieldOfObstacle().getCactus().get(i).getX(), printerLevel.getFieldOfObstacle().getCactus().get(i).getY()))
-                        && printerLevel.getFieldOfObstacle().getCactus().contains(new Coordinate(printerLevel.getFieldOfObstacle().getCactus().get(i).getX() - 1, printerLevel.getFieldOfObstacle().getCactus().get(i).getY()))){
-                            gc.drawImage(imgLittleSingleCactus, printerLevel.getFieldOfObstacle().getCactus().get(i).getY() * heightMultiple, printerLevel.getFieldOfObstacle().getCactus().get(i).getX() * widthMultiple - 5);
-                        }
-                        else {
-                            gc.drawImage(imgLittleSingleCactus, printerLevel.getFieldOfObstacle().getCactus().get(i).getY() * heightMultiple, printerLevel.getFieldOfObstacle().getCactus().get(i).getX() * widthMultiple - 5);
-                        }
+                    for (int i = 0; i < printerLevel.getObstacle().getCactus().size(); i++) {
+                        graphicCanvas.drawImage(imgLittleSingleCactus, printerLevel.getObstacle().getCactus().get(i).getY() * heightMultiple, printerLevel.getObstacle().getCactus().get(i).getX() * widthMultiple - 5);
                     }
                     //ANIMATING BIRD
-                    for (int i = 0; i < printerLevel.getFieldOfObstacle().getBird().size(); i++) {
-                        gc.drawImage(imgBird, printerLevel.getFieldOfObstacle().getBird().get(i).getY() * heightMultiple, printerLevel.getFieldOfObstacle().getBird().get(i).getX() * widthMultiple);
+                    for (int i = 0; i < printerLevel.getObstacle().getBird().size(); i++) {
+                        graphicCanvas.drawImage(imgBird, printerLevel.getObstacle().getBird().get(i).getY() * heightMultiple, printerLevel.getObstacle().getBird().get(i).getX() * widthMultiple);
                     }
                 }
                 else {
                     //WHAT TO DO IF GAME OVER
-                    gc.fillText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
-                    gc.strokeText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
+                    graphicCanvas.fillText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
+                    graphicCanvas.strokeText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
                     mediaPlayerBackground.stop();
-                    score.getListOfScore().add(new Score(playerName.toUpperCase(), printerLevel.getFieldOfObstacle().getScore()));
-                    int ranking = 1;
-                    for (Score score : score.getListOfScore()) {
+                    scoreManager.getListOfScore().add(new Score(playerName.toUpperCase(), printerLevel.getObstacle().getScore()));
+                    scoreManager.store();
+                    int ranking = 0;
+                    for (Score score : scoreManager.getListOfScore()) {
                         ranking++;
-                        if (score.equals(new Score(playerName.toUpperCase(), printerLevel.getFieldOfObstacle().getScore())))
-                            gc.fillText("RANKING: " + ranking, 620, 50);
+                        if (score.equals(new Score(playerName.toUpperCase(), printerLevel.getObstacle().getScore()))) {
+                            graphicCanvas.fillText("RANKING: " + ranking + "°", 620, 50);
+                            graphicCanvas.strokeText("RANKING: " + ranking + "°", 620, 50);
+                        }
                     }
-
-                    gc.strokeText("RANKING: ", 620, 50);
-                    score.store();
                 }
             }
         }.start();

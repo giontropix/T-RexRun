@@ -1,17 +1,17 @@
 public class Trex extends Thread {
 
     private boolean isJump = false;
-    private final FieldOfObstacle fieldOfObstacle = new FieldOfObstacle();
-    private final Coordinate tRex;
+    private final Obstacle obstacle = new Obstacle();
+    private final Coordinate trex;
 
     public Trex() {
-        tRex = new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1,5);
+        this.trex = new Coordinate(this.obstacle.getFieldHeight() - 1,5);
     }
 
     @Override
     public void run(){
         try {
-             do {
+             while (this.obstacle.isInGame()) {
                  if(this.isJump) {
                      this.lookForHeadBetweenClouds();
                      this.jump();
@@ -21,14 +21,14 @@ public class Trex extends Thread {
                      this.setGravity();
                  }
                  Thread.sleep(200);
-            } while (this.fieldOfObstacle.isInGame());
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public Coordinate gettRex() {
-        return this.tRex;
+    public Coordinate getTrex() {
+        return this.trex;
     }
 
     public boolean isJump() {
@@ -39,24 +39,24 @@ public class Trex extends Thread {
         this.isJump = jump;
     }
 
-    public boolean lookForHeadBetweenClouds() {
-        return this.tRex.equals(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 5, 5));
+    public boolean lookForHeadBetweenClouds() { //CHECK IF THE TREX IS AT MAX JUMP HEIGHT
+        return this.trex.equals(new Coordinate(this.obstacle.getFieldHeight() - 5, 5));
     }
 
-    public void jump(){
+    private void jump(){
         if(!lookForHeadBetweenClouds())
-            this.tRex.setX(this.tRex.getX() - 1);
+            this.trex.setX(this.trex.getX() - 1);
         else this.isJump = false;
     }
 
-    public boolean lookForFeetOnTheGround() {
-        return this.tRex.equals(new Coordinate(this.fieldOfObstacle.getFieldHeight() - 1, 5));
+    public boolean lookForFeetOnTheGround() { //CHECK IF THE TREX IS ON THE GROUND
+        return this.trex.equals(new Coordinate(this.obstacle.getFieldHeight() - 1, 5));
     }
 
-    public void setGravity() {
+    private void setGravity() {
         if (!lookForFeetOnTheGround()) {
-            this.isJump = false;
-            this.tRex.setX(this.tRex.getX() + 1);
+            this.isJump = false; //RESET JUMP TO FALSE TO AVOID ANOTHER JUMP DURING THE JUMP(SEE ALSO MAIN AND GUIMANAGER)
+            this.trex.setX(this.trex.getX() + 1);
         }
     }
 }

@@ -17,7 +17,7 @@ public class ScoreManager {
         return listOfScore;
     }
 
-    public void store() {
+    public void store() { //STORE FULL SCORE OBJECT, NOT ONLY THE NAME OR THE SCORE
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(this.createFilePath(this.path)));
             outputStream.writeObject(this.listOfScore);
@@ -27,10 +27,10 @@ public class ScoreManager {
         }
     }
 
-    public void load() {
+    public void load() { //LOAD FULL SCORE OBJECT, NOT ONLY THE NAME OR THE SCORE
         try {
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(this.createFilePath(this.path)));
-            this.listOfScore = (TreeSet<Score>)inputStream.readObject();
+            this.listOfScore = (TreeSet<Score>)inputStream.readObject(); //I DON'T KNOW WHAT TO DO TO AVOID THIS WARNING
             inputStream.close();
         } catch (EOFException eofException) {
             System.out.println("Fine della lettura del file");

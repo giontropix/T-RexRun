@@ -33,13 +33,13 @@ public class Main {
                             System.out.println("Wrong value inserted");
                         }
                         if (answer.equalsIgnoreCase("s")) {
-                            if (printerLevel.getTrex().lookForFeetOnTheGround())
+                            if (printerLevel.getTrex().lookForFeetOnTheGround()) //TREX CAN JUMP ONLY IF IT'S ON THE GROUND
                                 printerLevel.getTrex().setJump(true);
                         }
-                        if(!printerLevel.getFieldOfObstacle().isInGame())
+                        if(!printerLevel.getObstacle().isInGame())
                             System.out.println("HAI PERSO!!!\nPremi INVIO per continuare...");
-                    } while (printerLevel.getFieldOfObstacle().isInGame());
-                    scoreManager.getListOfScore().add(new Score(name.toUpperCase(), printerLevel.getFieldOfObstacle().getScore()));
+                    } while (printerLevel.getObstacle().isInGame());
+                    scoreManager.getListOfScore().add(new Score(name.toUpperCase(), printerLevel.getObstacle().getScore()));
                     scoreManager.store();
                     break;
                 case 2:

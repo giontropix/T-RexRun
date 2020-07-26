@@ -55,7 +55,6 @@ public class MainGUI extends Application {
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
             scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
             scrollPane.setFitToWidth(true);
-            //secondaryLayout.setAlignment(Pos.CENTER);
             Scene secondScene = new Scene(scrollPane, 300, 500);
             // New window (Stage)
             Stage newWindow = new Stage();
@@ -89,6 +88,7 @@ public class MainGUI extends Application {
         this.pane.add(playerNameTextField, 0, 1);
         //ADDING BUTTON
         Button buttonStartGame = new Button("START GAME");
+        buttonStartGame.setDefaultButton(true);
         buttonStartGame.setAlignment(Pos.BASELINE_CENTER);
         this.pane.add(buttonStartGame, 0, 6);
         final Text playerNameNotInsertedWarning = new Text();
