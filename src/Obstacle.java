@@ -6,6 +6,7 @@ public class Obstacle extends Thread {
     private final int fieldWidth = 25;
     private boolean isInGame = true;
     private int score = 0;
+    private int distance = 0;
     private final Vector<Coordinate> cactus = new Vector<>();
     private final Vector<Coordinate> bird = new Vector<>();
     private final Vector<Coordinate> ground = new Vector<>();
@@ -21,6 +22,7 @@ public class Obstacle extends Thread {
                 this.generateObstacle();
                 this.moveObstacle();
                 this.score++;
+                distance++;
                 this.deleteOutOfViewObstacle();
                 Thread.sleep (this.speedUpGame());
             }
@@ -72,7 +74,7 @@ public class Obstacle extends Thread {
     }
 
     private void generateObstacle(){
-        if (this.score % 5 == 0) {
+        if (this.distance % 5 == 0) {
             double random = Math.random();
             if (random <= 0.25) { // probability to add a big cactus
                 this.cactus.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
