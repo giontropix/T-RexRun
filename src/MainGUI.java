@@ -15,12 +15,12 @@ import java.io.File;
 public class MainGUI extends Application {
     private GUIManager guiManager = new GUIManager(null);
     private final GridPane pane = new GridPane();
-    private final ScoreManager score = new ScoreManager();
+    private final ScoreManager scoreManager = new ScoreManager();
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("T-Rex Run!");
-        this.score.load();
+        this.scoreManager.load();
         createContent(primaryStage);
     }
 
@@ -45,7 +45,7 @@ public class MainGUI extends Application {
         subMenuRanking.setOnAction(e -> {
             TilePane secondaryLayout = new TilePane();
             int ranking = 1;
-            for (Score listOfScore : this.score.getListOfScore()) {
+            for (Score listOfScore : this.scoreManager.getListOfScore()) {
                 Label secondLabel = new Label(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
                         ", Total Score: " + listOfScore.getTotalScore());
                 secondLabel.setAlignment(Pos.TOP_LEFT);

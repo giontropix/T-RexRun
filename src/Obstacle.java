@@ -74,7 +74,7 @@ public class Obstacle extends Thread {
     }
 
     private void generateObstacle(){
-        if (this.distance % 5 == 0) {
+        if (this.distance % 5 == 0) { //TO ADD AN OBSTACLE AT LEAST 5 "METRES" BETWEEN THE PREVIOUS
             double random = Math.random();
             if (random <= 0.25) { // probability to add a big cactus
                 this.cactus.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));

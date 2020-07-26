@@ -210,8 +210,8 @@ public class GUIManager extends Application {
                 graphicCanvas.clearRect(0, 0, printerLevel.getObstacle().getFieldWidth() * widthMultiple, printerLevel.getObstacle().getFieldHeight() * heightMultiple);
                 graphicCanvas.setFont(Font.font(20));
                 //ADDING SCORE ON THE TOP-RIGHT
-                graphicCanvas.fillText("SCORE: " + printerLevel.getObstacle().getScore(), 620, 30);
-                graphicCanvas.strokeText("SCORE: " + printerLevel.getObstacle().getScore(), 620, 30);
+                graphicCanvas.fillText("SCORE: " + printerLevel.getObstacle().getScore(), 600, 30);
+                graphicCanvas.strokeText("SCORE: " + printerLevel.getObstacle().getScore(), 600, 30);
                 printerLevel.crashGameOver();
                 //MANAGING ALL THE ELEMENTS INTO THE GAME SESSION
                 if(printerLevel.getObstacle().isInGame()) {
@@ -220,12 +220,12 @@ public class GUIManager extends Application {
                     if(printerLevel.getTrex().lookForFeetOnTheGround())
                         mediaPlayerRoar.stop();
                     if (printerLevel.getObstacle().speedUpGame() == 200 && printerLevel.getObstacle().getScore() < 230){
-                        graphicCanvas.fillText("SPEED UP!", 620, 50);
-                        graphicCanvas.strokeText("SPEED UP!", 620, 50);
+                        graphicCanvas.fillText("SPEED UP!", 600, 50);
+                        graphicCanvas.strokeText("SPEED UP!", 600, 50);
                     }
                     if (printerLevel.getObstacle().speedUpGame() == 100 && printerLevel.getObstacle().getScore() < 440){
-                        graphicCanvas.fillText("MAX SPEED!", 620, 50);
-                        graphicCanvas.strokeText("MAX SPEED!", 620, 50);
+                        graphicCanvas.fillText("MAX SPEED!", 600, 50);
+                        graphicCanvas.strokeText("MAX SPEED!", 600, 50);
                     }
                     //ANIMATING TREX
                     graphicCanvas.drawImage(imgTrex, printerLevel.getTrex().getTrex().getY() * heightMultiple, printerLevel.getTrex().getTrex().getX() * widthMultiple - 5);
@@ -249,8 +249,8 @@ public class GUIManager extends Application {
                     for (Score score : scoreManager.getListOfScore()) {
                         ranking++;
                         if (score.equals(new Score(playerName.toUpperCase(), printerLevel.getObstacle().getScore()))) {
-                            graphicCanvas.fillText("RANKING: " + ranking + "°", 620, 50);
-                            graphicCanvas.strokeText("RANKING: " + ranking + "°", 620, 50);
+                            graphicCanvas.fillText("RANKING: " + ranking + "°", 600, 50);
+                            graphicCanvas.strokeText("RANKING: " + ranking + "°", 600, 50);
                         }
                     }
                     if (ranking == 1) {
