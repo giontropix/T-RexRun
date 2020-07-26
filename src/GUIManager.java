@@ -212,6 +212,7 @@ public class GUIManager extends Application {
                 //ADDING SCORE ON THE TOP-RIGHT
                 graphicCanvas.fillText("SCORE: " + printerLevel.getObstacle().getScore(), 620, 30);
                 graphicCanvas.strokeText("SCORE: " + printerLevel.getObstacle().getScore(), 620, 30);
+                printerLevel.crashGameOver();
                 //MANAGING ALL THE ELEMENTS INTO THE GAME SESSION
                 if(printerLevel.getObstacle().isInGame()) {
                     if (printerLevel.getTrex().isJump())
@@ -251,6 +252,10 @@ public class GUIManager extends Application {
                             graphicCanvas.fillText("RANKING: " + ranking + "°", 620, 50);
                             graphicCanvas.strokeText("RANKING: " + ranking + "°", 620, 50);
                         }
+                    }
+                    if (ranking == 1) {
+                        graphicCanvas.fillText("NEW RECORD!!!", GAME_WIDTH/2 - 73, GAME_HEIGHT/2 + 20);
+                        graphicCanvas.strokeText("NEW RECORD!!!", GAME_WIDTH/2 - 73, GAME_HEIGHT/2 + 20);
                     }
                 }
             }

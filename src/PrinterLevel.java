@@ -12,12 +12,12 @@ public class PrinterLevel extends Thread {
     public void run(){
         try {
              while (this.obstacle.isInGame()) {
-                 this.addScoreFromJumpedObstacle();
                  this.crashGameOver();
+                 this.addScoreFromJumpedObstacle();
                  //System.out.println("\nPLAYER NAME: " + this.playerName.toUpperCase());
                  //System.out.println("SCORE: " + this.obstacle.getScore() + "\n");
-                 //System.out.println(this.toString());
-                 Thread.sleep(this.obstacle.speedUpGame());
+                 System.out.println(this.toString());
+                 Thread.sleep(this.obstacle.speedUpGame()/2);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class PrinterLevel extends Thread {
         }
     }
 
-    private void crashGameOver(){
+    public void crashGameOver(){
         for (int i = 0; i < this.obstacle.getCactus().size(); i++) {
             if(this.trex.getTrex().equals(new Coordinate(this.obstacle.getCactus().get(i).getX(), this.obstacle.getCactus().get(i).getY())))
                 this.obstacle.setInGame(false);
