@@ -1,7 +1,5 @@
 import javafx.animation.*;
 import javafx.application.Application;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -16,6 +14,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -93,9 +92,9 @@ public class GUIManager extends Application {
             TilePane secondaryLayout = new TilePane();
             int ranking = 1;
             for (Score listOfScore : this.scoreManager.getListOfScore()) {
-                Label secondLabel = new Label(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
+                Text scoreText = new Text(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
                         ", Total Score: " + listOfScore.getTotalScore());
-                secondaryLayout.getChildren().add(secondLabel);
+                secondaryLayout.getChildren().add(scoreText);
             }
             ScrollPane scrollPane = new ScrollPane(secondaryLayout);
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -257,8 +256,8 @@ public class GUIManager extends Application {
                         }
                     }
                     if (ranking == 1) {
-                        graphicCanvas.fillText("NEW RECORD!!!", GAME_WIDTH/2 - 73, GAME_HEIGHT/2 + 20);
-                        graphicCanvas.strokeText("NEW RECORD!!!", GAME_WIDTH/2 - 73, GAME_HEIGHT/2 + 20);
+                        graphicCanvas.fillText("NEW RECORD!!!", GAME_WIDTH/2 - 72, GAME_HEIGHT/2 + 20);
+                        graphicCanvas.strokeText("NEW RECORD!!!", GAME_WIDTH/2 - 72, GAME_HEIGHT/2 + 20);
                     }
                     scoreManager.store();
                 }

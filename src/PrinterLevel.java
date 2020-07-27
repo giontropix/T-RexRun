@@ -14,8 +14,8 @@ public class PrinterLevel extends Thread {
              while (this.obstacle.isInGame()) {
                  this.crashGameOver();
                  this.addScoreFromJumpedObstacle();
-                 //System.out.println("\nPLAYER NAME: " + this.playerName.toUpperCase());
-                 //System.out.println("SCORE: " + this.obstacle.getScore() + "\n");
+                 System.out.println("\nPLAYER NAME: " + this.playerName.toUpperCase());
+                 System.out.println("SCORE: " + this.obstacle.getScore() + "\n");
                  System.out.println(this.toString());
                  Thread.sleep(this.obstacle.speedUpGame()/2);
             }

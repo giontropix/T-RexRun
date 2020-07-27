@@ -40,24 +40,24 @@ public class MainGUI extends Application {
     }
 
     private VBox menu(Stage stage){
-        final Menu menuOptions = new Menu("Options");
-        MenuItem subMenuRanking = new MenuItem("Ranking");
-        subMenuRanking.setOnAction(e -> {
-            TilePane secondaryLayout = new TilePane();
+        final Menu menuOptions = new Menu("Options"); //ADD NEW MENU IN TOP-LEFT
+        MenuItem subMenuRanking = new MenuItem("Ranking"); //ADD NEW MENU ITEM IN THE PREVIOUS MENU
+        subMenuRanking.setOnAction(e -> { //WHAT HAPPENDS IF WE CLICK ON IT?
+            TilePane secondaryLayout = new TilePane(); //OPEN A NEW WINDOWS
             int ranking = 1;
-            for (Score listOfScore : this.scoreManager.getListOfScore()) {
-                Label secondLabel = new Label(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
-                        ", Total Score: " + listOfScore.getTotalScore());
-                secondaryLayout.getChildren().add(secondLabel);
+            for (Score score : this.scoreManager.getListOfScore()) { //FOR EACH SCORE OBJECT TAKE THE NAME AND THE SCORE POINTS
+                Text scoreText = new Text(ranking++ + "° Player, Name: " + score.getPlayerName().toUpperCase() + //FOR EACH SCORE CREATE A NEW LABEL
+                        ", Total Score: " + score.getTotalScore());
+                secondaryLayout.getChildren().add(scoreText); //ADD EVERY TEXT IN THE WINDOW WE CREATED BEFORE
             }
-            ScrollPane scrollPane = new ScrollPane(secondaryLayout);
-            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            ScrollPane scrollPane = new ScrollPane(secondaryLayout); //ADD THE WINDOW CREATED BEFORE IN A NEW WINDOWS WITH THE SCROLL BARS
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); //SCROLL BARS ONLY IF WE NEED THEM
             scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-            scrollPane.setFitToWidth(true);
-            Scene secondScene = new Scene(scrollPane, 300, 500);
+            scrollPane.setFitToWidth(true); //SIZE ACCORDING TO LABEL INTO WINDOW
+            Scene secondScene = new Scene(scrollPane, 300, 500); //ADD ALL THE WINDOWS CREATED BEFORE TO THE FINAL WINDOW
             // New window (Stage)
-            Stage newWindow = new Stage();
-            newWindow.setTitle("Ranking");
+            Stage newWindow = new Stage(); //CREATE A NEW SCENE AND ADD THE FINAL WINDOW
+            newWindow.setTitle("Ranking"); //STYLISH THE SCENE
             newWindow.setScene(secondScene);
             // Specifies the modality for new window.
             newWindow.initModality(Modality.WINDOW_MODAL);
@@ -66,7 +66,7 @@ public class MainGUI extends Application {
             // Set position of second window, related to primary window.
             newWindow.setX(stage.getX() + 200);
             newWindow.setY(stage.getY() + 100);
-            newWindow.show();
+            newWindow.show(); //SHOW THE SCENE
         });
         menuOptions.getItems().add(subMenuRanking);
         MenuBar menuBar = new MenuBar();

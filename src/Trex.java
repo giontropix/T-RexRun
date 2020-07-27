@@ -55,7 +55,7 @@ public class Trex extends Thread {
 
     private void setGravity() {
         if (!lookForFeetOnTheGround()) {
-            this.isJump = false; //RESET JUMP TO FALSE TO AVOID ANOTHER JUMP DURING THE JUMP(SEE ALSO MAIN AND GUIMANAGER)
+            this.isJump = false; //RESET JUMP TO FALSE TO AVOID ANOTHER JUMP DURING THE JUMP(SEE ALSO MAIN AND GUIMANAGER) AND LET FALL THE TREX
             this.trexBody.setX(this.trexBody.getX() + 1);
         }
     }
