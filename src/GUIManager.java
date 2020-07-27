@@ -187,7 +187,7 @@ public class GUIManager extends Application {
         keyboardNode.setFocusTraversable(true);
         keyboardNode.requestFocus();
         keyboardNode.setOnKeyPressed(this::handle);
-        this.root.getChildren().addAll(keyboardNode);
+        this.root.getChildren().add(keyboardNode);
         //ADDING TO PANE ALL THE ELEMENTS OF ROOT TO BE ABLE TO SHOW THEM
         pane.getChildren().addAll(this.root);
         //BORDERPANE FOR MENU ON TOP

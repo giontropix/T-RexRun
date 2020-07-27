@@ -18,7 +18,7 @@ public class ScoreManager {
     }
 
     public void removeWorseScore(){
-        while (this.listOfScore.size() > 50)
+        if (this.listOfScore.size() > 50)
             this.listOfScore.remove(this.listOfScore.last());
     }
 
