@@ -17,7 +17,13 @@ public class ScoreManager {
         return listOfScore;
     }
 
+    public void removeWorseScore(){
+        while (this.listOfScore.size() > 50)
+            this.listOfScore.remove(this.listOfScore.last());
+    }
+
     public void store() { //STORE FULL SCORE OBJECT, NOT ONLY THE NAME OR THE SCORE
+        this.removeWorseScore();
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(this.createFilePath(this.path)));
             outputStream.writeObject(this.listOfScore);

@@ -1,5 +1,6 @@
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -93,8 +94,7 @@ public class GUIManager extends Application {
             int ranking = 1;
             for (Score listOfScore : this.scoreManager.getListOfScore()) {
                 Label secondLabel = new Label(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
-                        ", Total Score: " + listOfScore.getTotalScore() + "\n");
-                secondLabel.setAlignment(Pos.TOP_LEFT);
+                        ", Total Score: " + listOfScore.getTotalScore());
                 secondaryLayout.getChildren().add(secondLabel);
             }
             ScrollPane scrollPane = new ScrollPane(secondaryLayout);
@@ -104,7 +104,7 @@ public class GUIManager extends Application {
             Scene secondScene = new Scene(scrollPane, 300, 500);
             // New window (Stage)
             Stage newWindow = new Stage();
-            newWindow.setTitle("Second Stage");
+            newWindow.setTitle("Ranking");
             newWindow.setScene(secondScene);
             // Specifies the modality for new window.
             newWindow.initModality(Modality.WINDOW_MODAL);
@@ -166,7 +166,7 @@ public class GUIManager extends Application {
         this.parallelTransitionBackground.setCycleCount(Animation.INDEFINITE);
     }
 
-    private void handle(KeyEvent arg0) {
+    private void handle(KeyEvent arg0) { //JUMP PRESSING SPACE
         if (this.printerLevel.getObstacle().isInGame() && printerLevel.getTrex().lookForFeetOnTheGround()) { //TREX CAN JUMP ONLY IF IT'S ON THE GROUND
             this.printerLevel.getTrex().setJump(arg0.getCode() == KeyCode.SPACE);
         }
@@ -227,8 +227,12 @@ public class GUIManager extends Application {
                         graphicCanvas.fillText("MAX SPEED!", 600, 50);
                         graphicCanvas.strokeText("MAX SPEED!", 600, 50);
                     }
+                    if (printerLevel.getObstacle().speedUpGame() == 50 && printerLevel.getObstacle().getScore() < 650){
+                        graphicCanvas.fillText("ULTIMATE!", 600, 50);
+                        graphicCanvas.strokeText("ULTIMATE!", 600, 50);
+                    }
                     //ANIMATING TREX
-                    graphicCanvas.drawImage(imgTrex, printerLevel.getTrex().getTrex().getY() * heightMultiple, printerLevel.getTrex().getTrex().getX() * widthMultiple - 5);
+                    graphicCanvas.drawImage(imgTrex, printerLevel.getTrex().getTrexBody().getY() * heightMultiple, printerLevel.getTrex().getTrexBody().getX() * widthMultiple - 5);
                     //ANIMATING CACTUS
                     for (int i = 0; i < printerLevel.getObstacle().getCactus().size(); i++) {
                         graphicCanvas.drawImage(imgLittleSingleCactus, printerLevel.getObstacle().getCactus().get(i).getY() * heightMultiple, printerLevel.getObstacle().getCactus().get(i).getX() * widthMultiple - 5);
@@ -244,7 +248,6 @@ public class GUIManager extends Application {
                     graphicCanvas.strokeText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
                     mediaPlayerBackground.stop();
                     scoreManager.getListOfScore().add(new Score(playerName.toUpperCase(), printerLevel.getObstacle().getScore()));
-                    scoreManager.store();
                     int ranking = 0;
                     for (Score score : scoreManager.getListOfScore()) {
                         ranking++;
@@ -257,6 +260,7 @@ public class GUIManager extends Application {
                         graphicCanvas.fillText("NEW RECORD!!!", GAME_WIDTH/2 - 73, GAME_HEIGHT/2 + 20);
                         graphicCanvas.strokeText("NEW RECORD!!!", GAME_WIDTH/2 - 73, GAME_HEIGHT/2 + 20);
                     }
+                    scoreManager.store();
                 }
             }
         }.start();

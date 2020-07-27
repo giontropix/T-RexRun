@@ -42,7 +42,7 @@ public class PrinterLevel extends Thread {
         }
         if (this.obstacle.getBird().size() > 0) { //ADDED THIS CONDITION BECAUSE OF THE RARE POSSIBILITY A BIRD CAN APPEAR
             for (int i = 0; i < this.obstacle.getBird().size(); i++) {
-                if ((this.trex.getTrex().getX() < this.getObstacle().getBird().get(i).getX()) && (this.trex.getTrex().getY() == this.getObstacle().getBird().get(i).getY())) {
+                if ((this.trex.getTrexBody().getX() < this.getObstacle().getBird().get(i).getX()) && (this.trex.getTrexBody().getY() == this.getObstacle().getBird().get(i).getY())) {
                     this.obstacle.setScore(this.obstacle.getScore() + 15);
                 }
             }
@@ -51,11 +51,11 @@ public class PrinterLevel extends Thread {
 
     public void crashGameOver(){
         for (int i = 0; i < this.obstacle.getCactus().size(); i++) {
-            if(this.trex.getTrex().equals(new Coordinate(this.obstacle.getCactus().get(i).getX(), this.obstacle.getCactus().get(i).getY())))
+            if(this.trex.getTrexBody().equals(new Coordinate(this.obstacle.getCactus().get(i).getX(), this.obstacle.getCactus().get(i).getY())))
                 this.obstacle.setInGame(false);
         }
         for (int i = 0; i < this.obstacle.getBird().size(); i++) {
-            if(this.trex.getTrex().equals(new Coordinate(this.obstacle.getBird().get(i).getX(), this.obstacle.getBird().get(i).getY())))
+            if(this.trex.getTrexBody().equals(new Coordinate(this.obstacle.getBird().get(i).getX(), this.obstacle.getBird().get(i).getY())))
                 this.obstacle.setInGame(false);
         }
     }
@@ -69,7 +69,7 @@ public class PrinterLevel extends Thread {
                     result.append("\u001B[32m|\u001B[0m");
                 else if (this.obstacle.getBird().contains(new Coordinate(i, j)))
                     result.append("\u001B[35m=\u001B[0m");
-                else if (this.trex.getTrex().equals(new Coordinate(i, j)))
+                else if (this.trex.getTrexBody().equals(new Coordinate(i, j)))
                     result.append("\u001B[31mO\u001B[0m");
                 else if (this.obstacle.getGround().contains(new Coordinate(i, j))) {
                     result.append("~");

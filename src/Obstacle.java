@@ -7,6 +7,7 @@ public class Obstacle extends Thread {
     private boolean isInGame = true;
     private int score = 0;
     private int distance = 0;
+    private int distanceBeweenObstacle = 5;
     private final Vector<Coordinate> cactus = new Vector<>();
     private final Vector<Coordinate> bird = new Vector<>();
     private final Vector<Coordinate> ground = new Vector<>();
@@ -74,7 +75,7 @@ public class Obstacle extends Thread {
     }
 
     private void generateObstacle(){
-        if (this.distance % 5 == 0) { //TO ADD AN OBSTACLE AT LEAST 5 "METRES" BETWEEN THE PREVIOUS
+        if (this.distance % distanceBeweenObstacle == 0) { //TO ADD AN OBSTACLE AT LEAST 5 "METRES" BETWEEN THE PREVIOUS
             double random = Math.random();
             if (random <= 0.25) { // probability to add a big cactus
                 this.cactus.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
@@ -106,13 +107,18 @@ public class Obstacle extends Thread {
             this.ground.remove(0);
     }
 
-    public long speedUpGame() {
-        if (this.score < 200)
+    public long speedUpGame() { //SPEEDUP GAME ACCORDING TO SCORE, WITH A HIGHER SPEED THE DISTANCE BETWEEN OBSTACLE INCREASE ALSO.
+        if (this.score < 200) {
             return 400;
-        if (this.score < 400)
+        }
+        if (this.score < 400) {
+            this.distanceBeweenObstacle = 7;
             return 200;
-        if (this.score < 600)
+        }
+        if (this.score < 600) {
+            this.distanceBeweenObstacle = 9;
             return 100;
+        }
         else return 50;
     }
 }

@@ -48,7 +48,6 @@ public class MainGUI extends Application {
             for (Score listOfScore : this.scoreManager.getListOfScore()) {
                 Label secondLabel = new Label(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
                         ", Total Score: " + listOfScore.getTotalScore());
-                secondLabel.setAlignment(Pos.TOP_LEFT);
                 secondaryLayout.getChildren().add(secondLabel);
             }
             ScrollPane scrollPane = new ScrollPane(secondaryLayout);
@@ -58,7 +57,7 @@ public class MainGUI extends Application {
             Scene secondScene = new Scene(scrollPane, 300, 500);
             // New window (Stage)
             Stage newWindow = new Stage();
-            newWindow.setTitle("Second Stage");
+            newWindow.setTitle("Ranking");
             newWindow.setScene(secondScene);
             // Specifies the modality for new window.
             newWindow.initModality(Modality.WINDOW_MODAL);

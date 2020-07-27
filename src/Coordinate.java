@@ -1,4 +1,4 @@
-public class Coordinate {
+public class Coordinate { //BASE CLASS FOR BUILD OBSTACLE AND TREX
     private int x;
     private int y;
 
@@ -23,7 +23,8 @@ public class Coordinate {
         this.y = y;
     }
 
-    public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) { //EQUALS DEFINED BECAUSE WE NEED TO KNOW IF THE COORDINATES OF OBSTACLES AND TREX WILL BE THE SAME
         if (o instanceof Coordinate) {
             Coordinate c = (Coordinate)o;
             return c.x == this.x && c.y == this.y;
