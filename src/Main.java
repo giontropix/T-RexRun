@@ -39,10 +39,11 @@ public class Main {
                                 printerLevel.getTrex().setJump(true);
                         }
                         if(!printerLevel.getObstacle().isInGame())
-                            System.out.println("HAI PERSO!!!\nPremi INVIO per continuare...");
+                            System.out.println("HAI PERSO!!!");
                     } while (printerLevel.getObstacle().isInGame());
                     scoreManager.getListOfScore().add(new Score(name.toUpperCase(), printerLevel.getObstacle().getScore()));
                     scoreManager.store();
+                    repeatMenu = true;
                     break;
                 case 2:
                     if (scoreManager.getListOfScore().size() == 0)

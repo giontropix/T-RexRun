@@ -14,23 +14,22 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.io.File;
 
 public class GUIManager extends Application {
-    private Group root = new Group();
+    private final Group root = new Group();
     private String playerName;
     private PrinterLevel printerLevel = new PrinterLevel(this.playerName);
-    private ScoreManager scoreManager = new ScoreManager();
+    private final ScoreManager scoreManager = new ScoreManager();
     private final int heightMultiple = 35;
     private final int widthMultiple = 30;
     private final double GAME_HEIGHT = printerLevel.getObstacle().getFieldHeight() * heightMultiple;
     private final double GAME_WIDTH = printerLevel.getObstacle().getFieldWidth() * widthMultiple;
-    private Canvas canvas = new Canvas(printerLevel.getObstacle().getFieldWidth() * widthMultiple, printerLevel.getObstacle().getFieldHeight() * heightMultiple);
-    private GraphicsContext graphicCanvas = canvas.getGraphicsContext2D();
+    private final Canvas canvas = new Canvas(printerLevel.getObstacle().getFieldWidth() * widthMultiple, printerLevel.getObstacle().getFieldHeight() * heightMultiple);
+    private final GraphicsContext graphicCanvas = canvas.getGraphicsContext2D();
     private ParallelTransition parallelTransitionBackground;
     private ParallelTransition parallelTransitionGround;
     private final Image img = new Image(new File(createFilePath("\\img\\wide_background.jpg")).getAbsoluteFile().toURI().toString());
@@ -66,16 +65,6 @@ public class GUIManager extends Application {
         String finalPath = new File("").getAbsolutePath();
         return finalPath + path;
     }
-
-    /*private void reset(){
-        this.root = new Group();
-        this.printerLevel = new PrinterLevel(this.playerName);
-        this.scoreManager = new ScoreManager();
-        this.canvas = new Canvas(this.printerLevel.getObstacle().getFieldWidth() * this.widthMultiple, this.printerLevel.getObstacle().getFieldHeight() * this.heightMultiple);
-        this.graphicCanvas = canvas.getGraphicsContext2D();
-        this.mediaPlayerBackground.stop();
-        this.mediaPlayerRoar.stop();
-    }*/
 
     private VBox menu(Stage stage){
         final Menu menuOptions = new Menu("Options");
