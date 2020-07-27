@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         int choice = 0;
+        boolean repeatMenu = false;
         String name;
         ScoreManager scoreManager = new ScoreManager();
         scoreManager.load();
@@ -15,6 +16,7 @@ public class Main {
                 choice = scanChoice.nextInt();
             }
             catch (InputMismatchException e) {
+                repeatMenu = true;
                 System.out.println("Wrong value inserted");
             }
             switch (choice) {
@@ -53,13 +55,17 @@ public class Main {
                                     ", Total Score: " + score.getTotalScore());
                         }
                     }
+                    repeatMenu = true;
                     break;
                 case 0:
                     System.out.println("See you for the next game, good bye!");
                     return;
                 default:
-                    System.out.println("Wrong choose");
+                    if (!repeatMenu)
+                        System.out.println("Wrong choose");
+                    repeatMenu = true;
+                    break;
             }
-        } while (true);
+        } while (repeatMenu);
     }
 }

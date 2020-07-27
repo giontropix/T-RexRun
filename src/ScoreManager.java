@@ -18,7 +18,7 @@ public class ScoreManager {
     }
 
     public void removeWorseScore(){
-        if (this.listOfScore.size() > 50)
+        while (this.listOfScore.size() > 50)
             this.listOfScore.remove(this.listOfScore.last());
     }
 
@@ -34,6 +34,7 @@ public class ScoreManager {
     }
 
     public void load() { //LOAD FULL SCORE OBJECT, NOT ONLY THE NAME OR THE SCORE
+        this.listOfScore.clear();
         try {
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(this.createFilePath(this.path)));
             this.listOfScore = (TreeSet<Score>)inputStream.readObject(); //I DON'T KNOW WHAT TO DO TO AVOID THIS WARNING

@@ -50,8 +50,7 @@ public class GUIManager extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("T-Rex Run! Player Name: " + this.playerName);
-        reset();
-        this.scoreManager.load();
+        this.printerLevel = new PrinterLevel(this.playerName);
         createContent(stage);
     }
 
@@ -68,7 +67,7 @@ public class GUIManager extends Application {
         return finalPath + path;
     }
 
-    private void reset(){
+    /*private void reset(){
         this.root = new Group();
         this.printerLevel = new PrinterLevel(this.playerName);
         this.scoreManager = new ScoreManager();
@@ -76,14 +75,13 @@ public class GUIManager extends Application {
         this.graphicCanvas = canvas.getGraphicsContext2D();
         this.mediaPlayerBackground.stop();
         this.mediaPlayerRoar.stop();
-    }
+    }*/
 
     private VBox menu(Stage stage){
         final Menu menuOptions = new Menu("Options");
         MenuItem subMenuNewGame = new MenuItem("New Game");
         subMenuNewGame.setOnAction(e -> {
             stage.close();
-            this.reset();
             MainGUI mainGUI = new MainGUI();
             mainGUI.start(stage);
         });
@@ -92,7 +90,7 @@ public class GUIManager extends Application {
             TilePane secondaryLayout = new TilePane();
             int ranking = 1;
             for (Score listOfScore : this.scoreManager.getListOfScore()) {
-                Text scoreText = new Text(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
+                Label scoreText = new Label(ranking++ + "° Player, Name: " + listOfScore.getPlayerName().toUpperCase() +
                         ", Total Score: " + listOfScore.getTotalScore());
                 secondaryLayout.getChildren().add(scoreText);
             }
@@ -173,6 +171,7 @@ public class GUIManager extends Application {
 
     private void createContent(Stage stage) {
         //INITIALIZE GAME FROM PRINTERLEVEL
+        this.scoreManager.load();
         this.printerLevel.start();
         //INITIALIZE BACKGROUND
         initializeBackground();
@@ -243,9 +242,9 @@ public class GUIManager extends Application {
                 }
                 else {
                     //WHAT TO DO IF GAME OVER
+                    mediaPlayerBackground.stop();
                     graphicCanvas.fillText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
                     graphicCanvas.strokeText("GAME OVER", GAME_WIDTH/2 - 58, GAME_HEIGHT/2);
-                    mediaPlayerBackground.stop();
                     scoreManager.getListOfScore().add(new Score(playerName.toUpperCase(), printerLevel.getObstacle().getScore()));
                     int ranking = 0;
                     for (Score score : scoreManager.getListOfScore()) {

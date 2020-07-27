@@ -20,7 +20,6 @@ public class MainGUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("T-Rex Run!");
-        this.scoreManager.load();
         createContent(primaryStage);
     }
 
@@ -46,7 +45,7 @@ public class MainGUI extends Application {
             TilePane secondaryLayout = new TilePane(); //OPEN A NEW WINDOWS
             int ranking = 1;
             for (Score score : this.scoreManager.getListOfScore()) { //FOR EACH SCORE OBJECT TAKE THE NAME AND THE SCORE POINTS
-                Text scoreText = new Text(ranking++ + "° Player, Name: " + score.getPlayerName().toUpperCase() + //FOR EACH SCORE CREATE A NEW LABEL
+                Label scoreText = new Label(ranking++ + "° Player, Name: " + score.getPlayerName().toUpperCase() + //FOR EACH SCORE CREATE A NEW LABEL
                         ", Total Score: " + score.getTotalScore());
                 secondaryLayout.getChildren().add(scoreText); //ADD EVERY TEXT IN THE WINDOW WE CREATED BEFORE
             }
@@ -75,12 +74,13 @@ public class MainGUI extends Application {
     }
 
     private void createContent(Stage stage){
+        this.scoreManager.load();
         this.pane.setAlignment(Pos.CENTER);
         //ADDING FORM
         Text sceneTitle = new Text("Welcome to T-Rex Run!");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         this.pane.add(sceneTitle, 0, 10, 1, 5);
-        Label insertPlayerName = new Label("PLAYER NAME:");
+        Label insertPlayerName = new Label("INSERT PLAYER NAME:");
         insertPlayerName.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 15));
         this.pane.add(insertPlayerName, 0, 0);
         TextField playerNameTextField = new TextField();
