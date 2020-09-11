@@ -32,11 +32,11 @@ public class GUIManager extends Application {
     private final GraphicsContext graphicCanvas = canvas.getGraphicsContext2D();
     private ParallelTransition parallelTransitionBackground;
     private ParallelTransition parallelTransitionGround;
-    private final Image img = new Image(new File(createFilePath("\\img\\wide_background.jpg")).getAbsoluteFile().toURI().toString());
-    private final Image imgLittleSingleCactus = new Image(new File(createFilePath("\\img\\cactus_single_little.png")).getAbsoluteFile().toURI().toString(), 30, 40, false, false);
-    private final Image imgBird = new Image(new File(createFilePath("\\img\\bird.png")).getAbsoluteFile().toURI().toString(), 30, 30, false, false);
-    private final Image imgGround = new Image(new File(createFilePath("\\img\\Ground.png")).getAbsoluteFile().toURI().toString(), 1200, 12, false, false);
-    private final Image imgTrex = new Image(new File(createFilePath("\\img\\Dino-stand.png")).getAbsoluteFile().toURI().toString(), 40, 40, false, false);
+    private final Image img = new Image(new File(createFilePath("\\img\\wide_background.jpg")).toURI().toString());
+    private final Image imgLittleSingleCactus = new Image(new File(createFilePath("\\img\\cactus_single_little.png")).toURI().toString(), 30, 40, false, false);
+    private final Image imgBird = new Image(new File(createFilePath("\\img\\bird.png")).toURI().toString(), 30, 30, false, false);
+    private final Image imgGround = new Image(new File(createFilePath("\\img\\Ground.png")).toURI().toString(), 1200, 12, false, false);
+    private final Image imgTrex = new Image(new File(createFilePath("\\img\\Dino-stand.png")).toURI().toString(), 40, 40, false, false);
     private final Media roar = new Media(new File(createFilePath("\\sound\\trex_roar.mp3")).toURI().toString());
     private final MediaPlayer mediaPlayerRoar = new MediaPlayer(roar);
     private final Media backgroundAudio = new Media(new File(createFilePath("\\sound\\Welcome_to_Jurassic_Park_background.mp3")).toURI().toString());

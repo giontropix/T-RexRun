@@ -29,7 +29,7 @@ public class MainGUI extends Application {
     }
 
     private void createBackground(){
-        Image img = new Image(new File(createFilePath()).getAbsoluteFile().toURI().toString());
+        Image img = new Image(new File(createFilePath()).toURI().toString());
         BackgroundImage bgImg = new BackgroundImage(img,
                 BackgroundRepeat.REPEAT,
                 BackgroundRepeat.REPEAT,

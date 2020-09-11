@@ -77,12 +77,12 @@ public class Obstacle extends Thread {
     private void generateObstacle(){
         if (this.distance % distanceBeweenObstacle == 0) { //TO ADD AN OBSTACLE AT LEAST 5 "METRES" BETWEEN THE PREVIOUS
             double random = Math.random();
-            if (random <= 0.25) { // probability to add a little cactus
+            if (random <= 0.27) { // probability to add a little cactus
                 this.cactus.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
-            } else if (random > 0.25 && random <= 0.4) { //probability to add a big cactus
+            } else if (random > 0.27 && random <= 0.42) { //probability to add a big cactus
                 this.cactus.add(new Coordinate(this.fieldHeight - 1, this.fieldWidth - 1));
                 this.cactus.add(new Coordinate(this.fieldHeight - 2, this.fieldWidth - 1));
-            } else if (random > 0.4 && random <= 0.5) { //probability to add a bird
+            } else if (random > 0.42 && random <= 0.52) { //probability to add a bird
                 int randomHeight = ThreadLocalRandom.current().nextInt(this.fieldHeight - 5, this.fieldHeight - 1);
                 this.bird.add(new Coordinate(randomHeight, this.fieldWidth - 1));
             }
